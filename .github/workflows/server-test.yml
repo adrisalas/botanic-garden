@@ -25,6 +25,6 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
 
-    - name: Test with Gradle Wrapper
+    - name: Run tests
       run: ./gradlew clean test
       working-directory: ./server
