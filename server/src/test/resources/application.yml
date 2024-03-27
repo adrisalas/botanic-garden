@@ -1,0 +1,18 @@
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+  flyway:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    user: sa
+    password: sa
+  h2:
+    console:
+      settings:
+        trace: true
+  output.ansi.enabled: always
+  webflux:
+    static-path-pattern: "/static/**"
+logging.level:
+  org.springframework.web: DEBUG
