@@ -1,0 +1,15 @@
+spring:
+  application.name: bgserver
+  r2dbc:
+    url: "r2dbc:postgresql://${POSTGRES_HOST}/${POSTGRES_DATABASE}"
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  flyway:
+    url: "jdbc:postgresql://${POSTGRES_HOST}/${POSTGRES_DATABASE}"
+    user: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  output.ansi.enabled: always
+  webflux:
+    static-path-pattern: "/static/**"
+logging.level:
+  org.springframework.web: INFO
