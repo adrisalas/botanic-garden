@@ -8,11 +8,39 @@ Android App for a Botanic Garden using IoT Beacons
 ## Local setup
 
 1. Set these environment variables:
-    - `POSTGRES_HOST`
+    - `POSTGRES_HOST` _(ex: localhost:5432)_
     - `POSTGRES_DATABASE`
     - `POSTGRES_USERNAME`
     - `POSTGRES_PASSWORD`
 2. Build the app
-    - `cd ./server && ./gradlew clean build`
+    ```sh
+    cd server && ./gradlew clean build
+    ```
 3. Run server
-    - `./gradlew :bootRun`
+    ```sh
+    ./gradlew :bootRun
+    ```
+
+## Docker
+1. Generate jar:
+    ```sh
+    cd server && ./gradlew clean build
+    ```
+2. Generate docker image:
+    ```docker
+    docker build -t salastroya/bgserver .
+    ```
+3. Run docker:
+    ```docker
+    sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this} -e POSTGRES_PASSWORD=${fill_this} --name bgserver salastroya/bgserver
+    ```
+
+- Save image:
+    ```docker
+    docker save salastroya/bgserver | gzip > bgserver.tar.gz
+    ```
+
+- Load image:
+    ```docker
+    docker load < bgserver.tar.gz
+    ```
