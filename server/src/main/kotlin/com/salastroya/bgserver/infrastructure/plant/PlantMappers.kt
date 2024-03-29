@@ -31,7 +31,7 @@ fun PlantDto.toModel(): Plant {
     val details = PlantDetails(
         season = this.season,
         leafType = this.leafType,
-        water = this.leafType,
+        water = this.water,
         flowering = flowering
     )
 
