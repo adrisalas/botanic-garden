@@ -22,13 +22,9 @@ Android App for a Botanic Garden using IoT Beacons
     ```
 
 ## Docker
-1. Generate jar:
+1. Generate docker image:
     ```sh
-    cd server && ./gradlew clean build
-    ```
-2. Generate docker image:
-    ```docker
-    docker build -t salastroya/bgserver .
+    ./gradlew bootBuildImage --imageName=salastroya/bgserver
     ```
 3. Run docker:
     ```docker
