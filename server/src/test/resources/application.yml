@@ -15,4 +15,5 @@ spring:
   webflux:
     static-path-pattern: "/static/**"
 logging.level:
-  org.springframework.web: DEBUG
+  org.springframework.web: TRACE
+  org.springframework.r2dbc: TRACE

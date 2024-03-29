@@ -1,7 +1,9 @@
-package com.salastroya.bgserver.application
+package com.salastroya.bgserver.application.beacon
 
+import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.beacon.Beacon
 import com.salastroya.bgserver.core.beacon.BeaconService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
@@ -11,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/beacons")
 class BeaconController(private val service: BeaconService) {
+
+    private val log = KotlinLogging.logger {}
 
     @GetMapping
     fun findAllBeacons(): Flow<Beacon> {
@@ -48,6 +52,7 @@ class BeaconController(private val service: BeaconService) {
     @ExceptionHandler(Exception::class)
     suspend fun unexpectedException(ex: Exception): ResponseEntity<ErrorMessage> {
         val error = ErrorMessage(ex.message ?: "")
+        log.error(ex) { ex.message }
         return ResponseEntity(error, INTERNAL_SERVER_ERROR)
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import
 
 @DataR2dbcTest
 @Import(BeaconDataService::class, R2bcConfiguration::class)
-class BeaconDataServiceTest {
+class PlantDataServiceTest {
 
     @Autowired
     lateinit var beaconDataService: BeaconDataService

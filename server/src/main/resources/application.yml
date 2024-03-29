@@ -13,3 +13,4 @@ spring:
     static-path-pattern: "/static/**"
 logging.level:
   org.springframework.web: INFO
+  org.springframework.r2dbc: INFO

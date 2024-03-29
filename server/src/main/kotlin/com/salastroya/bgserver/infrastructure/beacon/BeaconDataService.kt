@@ -4,7 +4,6 @@ import com.salastroya.bgserver.core.beacon.Beacon
 import com.salastroya.bgserver.core.beacon.BeaconRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

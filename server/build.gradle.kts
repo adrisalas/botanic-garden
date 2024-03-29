@@ -24,6 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
