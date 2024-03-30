@@ -5,46 +5,36 @@ import com.salastroya.bgserver.core.beacon.BeaconRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BeaconDataService(
-    private val repository: BeaconR2bcRepository,
-    private val beaconItemRepository: BeaconItemR2bcRepository
+    private val repository: BeaconR2bcRepository
 ) : BeaconRepository {
 
     override fun findAll(): Flow<Beacon> {
         return repository
             .findAll()
-            .map { Beacon(it.id, findItemId(it.id)) }
+            .map { it.toModel() }
     }
 
-    private suspend fun findItemId(beaconId: String): Long? {
-        return beaconItemRepository.findById(beaconId)
-            ?.itemId
-    }
 
     override suspend fun findById(id: String): Beacon? {
-        return repository.findById(id)?.let {
-            Beacon(it.id, findItemId(it.id))
-        }
+        return repository.findById(id)?.toModel()
     }
 
-    @Transactional
-    override suspend fun save(beacon: Beacon) {
-        delete(beacon.id)
-
-        repository.insert(BeaconDto(beacon.id))
-
-        if (beacon.itemId != null) {
-            beaconItemRepository.insert(BeaconItemDto(beacon.id, beacon.itemId))
-        }
-
+    override suspend fun existsById(id: String): Boolean {
+        return repository.existsById(id)
     }
 
-    @Transactional
+    override suspend fun insert(beacon: Beacon): Beacon {
+        return repository.insert(beacon.toDto()).toModel()
+    }
+
+    override suspend fun update(beacon: Beacon): Beacon {
+        return repository.update(beacon.toDto()).toModel()
+    }
+
     override suspend fun delete(id: String) {
-        beaconItemRepository.deleteById(id)
         repository.deleteById(id)
     }
 }

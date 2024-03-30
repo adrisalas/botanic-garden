@@ -1,10 +1,12 @@
 package com.salastroya.bgserver.infrastructure.plant
 
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
 interface PlantR2bcRepository : CoroutineCrudRepository<PlantDto, Int> {
+    override fun findAll(): Flow<PlantDto>
     override suspend fun findById(id: Int): PlantDto?
     override suspend fun existsById(id: Int): Boolean
     suspend fun insert(beacon: PlantDto): PlantDto
