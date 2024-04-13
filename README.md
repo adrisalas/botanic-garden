@@ -7,16 +7,25 @@ Android App for a Botanic Garden using IoT Beacons
 
 ## Local setup
 
-1. Set these environment variables:
+1. Generate a PKCS#12 certificate and store it somewhere:
+    ```sh
+    openssl req -newkey rsa:4096 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+
+    openssl pkcs12 -export -out "bgserver$(date +%y%M%d).p12" -inkey key.pem -in cert.pem
+    ```
+
+2. Set these environment variables:
     - `POSTGRES_HOST` _(ex: localhost:5432)_
     - `POSTGRES_DATABASE`
     - `POSTGRES_USERNAME`
     - `POSTGRES_PASSWORD`
-2. Build the app
+    - `PKCS12_PATH` _(ex: /etc/certs/bgserver20240101.p12)_
+    - `PKCS12_PASSWORD`
+3. Build the app
     ```sh
     cd server && ./gradlew clean build
     ```
-3. Run server
+4. Run server
     ```sh
     ./gradlew :bootRun
     ```
@@ -26,17 +35,25 @@ Android App for a Botanic Garden using IoT Beacons
     ```sh
     ./gradlew bootBuildImage --imageName=salastroya/bgserver
     ```
+    - Save image:
+        ```docker
+        docker save salastroya/bgserver | gzip > bgserver.tar.gz
+        ```
+
+    - Load image:
+        ```docker
+        docker load < bgserver.tar.gz
+        ```
+
+
+1. Generate a PKCS#12 certificate and store it somewhere:
+    ```sh
+    openssl req -newkey rsa:4096 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+
+    openssl pkcs12 -export -out "bgserver$(date +%y%M%d).p12" -inkey key.pem -in cert.pem
+    ```
+
 3. Run docker:
     ```docker
-    sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this} -e POSTGRES_PASSWORD=${fill_this} --name bgserver salastroya/bgserver
-    ```
-
-- Save image:
-    ```docker
-    docker save salastroya/bgserver | gzip > bgserver.tar.gz
-    ```
-
-- Load image:
-    ```docker
-    docker load < bgserver.tar.gz
+    sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this } -e POSTGRES_PASSWORD=${fill_this} -e PKCS12_PATH=${fill_this} -e PKCS12_PASSWORD=${fill_this} -v ${fill_this}:${fill_this} --name bgserver salastroya/bgserver
     ```
