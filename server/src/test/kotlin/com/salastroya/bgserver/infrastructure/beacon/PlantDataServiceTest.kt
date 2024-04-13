@@ -18,11 +18,9 @@ class PlantDataServiceTest {
     lateinit var beaconDataService: BeaconDataService
 
     @Test
-    fun findAll() {
-        runBlocking {
-            val list = beaconDataService.findAll().toList()
+    fun findAll(): Unit = runBlocking {
+        val list = beaconDataService.findAll().toList()
 
-            assertThat(list).hasSize(0)
-        }
+        assertThat(list).hasSize(0)
     }
 }
