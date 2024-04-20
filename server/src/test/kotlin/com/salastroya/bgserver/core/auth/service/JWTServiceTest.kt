@@ -1,9 +1,10 @@
-package com.salastroya.bgserver.core.auth
+package com.salastroya.bgserver.core.auth.service
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.salastroya.bgserver.core.auth.model.ISSUER
 import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -14,43 +15,44 @@ import java.util.*
 
 
 @ExtendWith(MockKExtension::class)
-class JWTUseCasesTest {
+class JWTServiceTest {
     companion object {
+        private const val USERNAME = "adri"
+        private const val PASSPHRASE = "Potato2024"
         private const val VALID_TOKEN =
             "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9" +
-                    ".eyJ1c2VySWQiOjEwMCwiaXNBZG1pbiI6dHJ1ZSwiaXNzIjoiYmdzZXJ2ZXIiLCJpYXQiOjEuNzEzNTcxMTY0MzU4MjU3RTl9" +
-                    ".MjhaS4WSnso3Clf68k7PqXBx_xUexQ-jIH3MgmwRFz75ae8anYhujyjiA3fJwPHTgrh4Zx5n5eRJQlifOtv69w"
+                    ".eyJ1c2VybmFtZSI6ImFkcmkiLCJpc0FkbWluIjp0cnVlLCJpc3MiOiJiZ3NlcnZlciIsImlhdCI6MS43MTM2MTEyMjk4ODQ0MjRFOX0" +
+                    ".9Q9jEdXJAnuhCNIAZKwY8zkC-eTlZLnapZB2ofEPmkpVwvsAs07HGnq5wtURoyIIWtrbgfo0FplfXRbsolRShQ"
 
         private const val INVALID_TOKEN =
             "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9" +
-                    ".eyJ1c2VySWQiOjIyMiwiaXNBZG1pbiI6dHJ1ZSwiaXNzIjoiYmdzZXJ2ZXIiLCJpYXQiOjE3MTM1NzExNjQuMzU4MjU3fQ" +
-                    ".MjhaS4WSnso3Clf68k7PqXBx_xUexQ-jIH3MgmwRFz75ae8anYhujyjiA3fJwPHTgrh4Zx5n5eRJQlifOtv69w"
+                    ".eyJ1c2VybmFtZSI6ImFkcmkiLCJpc0FkbWluIjpmYWxzZSwiaXNzIjoiYmdzZXJ2ZXIiLCJpYXQiOjEuNzEzNjExNDY4MDE3OTM5RTl9" +
+                    ".FB2-9blqHv1vsj2cE4PVvOVibhWVfFjJbOFE4xp8D4Sc6J_OWsCj_YznnhQyySr6BiO_7j-b-1UB8aeIKInp7Q"
     }
 
-    private val key = "Patata2024"
     private val objectMapper: ObjectMapper = jacksonObjectMapper().registerModules(JavaTimeModule())
 
-    private val service: JWTUseCases = JWTUseCases(key, objectMapper)
+    private val service: JWTService = JWTService(PASSPHRASE, objectMapper)
 
     @Test
     fun createToken() {
-        val jwt = service.createToken(100L, false)
+        val jwt = service.createToken(USERNAME, false)
 
         val (header, payload, _) = jwt.split(".")
 
         assertThat(String(Base64.getDecoder().decode(header)))
             .isEqualTo("{\"alg\":\"HS512\",\"typ\":\"JWT\"}")
         assertThat(String(Base64.getDecoder().decode(payload)))
-            .contains("{\"userId\":100,\"isAdmin\":false,\"iss\":\"bgserver\",\"iat\":")
+            .contains("{\"username\":\"adri\",\"isAdmin\":false,\"iss\":\"bgserver\",\"iat\":")
     }
 
     @Test
     fun decodeValidToken() {
         val jwt = service.decodeToken(VALID_TOKEN)
 
-        assertThat(jwt.iat).isEqualTo(Instant.ofEpochSecond(1713571164L, 358257000L))
+        assertThat(jwt.iat).isEqualTo(Instant.ofEpochSecond(1713611229L, 884424000L))
         assertThat(jwt.iss).isEqualTo(ISSUER)
-        assertThat(jwt.userId).isEqualTo(100)
+        assertThat(jwt.username).isEqualTo(USERNAME)
         assertThat(jwt.isAdmin).isEqualTo(true)
     }
 

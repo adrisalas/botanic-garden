@@ -17,3 +17,7 @@ spring:
 logging.level:
   org.springframework.web: TRACE
   org.springframework.r2dbc: TRACE
+
+custom:
+  security:
+    passphrase: "SuperSecretPassphrase"

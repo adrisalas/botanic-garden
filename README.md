@@ -25,7 +25,7 @@ Android App for a Botanic Garden using IoT Beacons
    - `POSTGRES_PASSWORD`
    - `PKCS12_PATH` _(ex: /etc/certs/bgserver20240101.p12)_
    - `PKCS12_PASSWORD`
-   - `JWT_KEY`
+   - `CUSTOM_PASSPHRASE`
 3. Build the app
    ```sh
    cd server && ./gradlew clean build
@@ -59,7 +59,7 @@ Android App for a Botanic Garden using IoT Beacons
 1. Run docker:
    - Via docker run:
    ```sh
-   sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this } -e POSTGRES_PASSWORD=${fill_this} -e PKCS12_PATH=${fill_this} -e PKCS12_PASSWORD=${fill_this} -e JWT_KEY=${fill_this} -v ${fill_this}:${fill_this} --name bgserver salastroya/bgserver
+   sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this } -e POSTGRES_PASSWORD=${fill_this} -e PKCS12_PATH=${fill_this} -e PKCS12_PASSWORD=${fill_this} -e CUSTOM_PASSPHRASE=${fill_this} -v ${fill_this}:${fill_this} --name bgserver salastroya/bgserver
    ```
    - Via a `docker-compose.yml`
    ```docker
@@ -76,7 +76,7 @@ Android App for a Botanic Garden using IoT Beacons
                - POSTGRES_PASSWORD=${fill_this}
                - PKCS12_PATH=${fill_this}
                - PKCS12_PASSWORD=${fill_this}
-               - JWT_KEY=${fill_this}
+               - CUSTOM_PASSPHRASE=${fill_this}
            volumes:
                - ${fill_this}:${fill_this}
            image: salastroya/bgserver

@@ -25,7 +25,8 @@ logging.level:
   org.springframework.r2dbc: INFO
 
 custom:
-  jwtKey: ${JWT_KEY}
+  security:
+    passphrase: ${CUSTOM_PASSPHRASE}
 
 server:
   ssl:
