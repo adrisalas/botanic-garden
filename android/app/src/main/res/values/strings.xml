@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Botanic Garden Android</string>
+
+    <string name="home">Home</string>
+    <string name="news">News</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="map">Map</string>
+
+    <!-- ...Home Screen... -->
+    <string name="titleHome">Atlantic Botanical Garden</string>
+    <string name="cityHome">Gijón</string>
+    <string name="registerButton">Sign up</string>
+
+    <!-- ...Nearby Plants... -->
+    <string name="titleNearby">Nearby Plants</string>
+    <string name="scanning">Scanning...</string>
+    <string name="scanningDisabled">"Scanning is deactivated."</string>
+
+    <!-- ...Search Screen... -->
+    <string name="titleSearch">Search</string>
+    <string name="placeholderSearch">Search...</string>
+    <string name="buttonBloomingOff">Show Only Blooming</string>
+    <string name="buttonBloomingOn">Show All</string>
+
+    <!-- ...Plant Detail... -->
+    <string name="leafIcon">leafType</string>
+    <string name="waterIcon">water</string>
+    <string name="floweringIcon">flowering</string>
+
+    <!-- ...404... -->
+    <string name="error404">404</string>
+
+    <!-- ...Login and Sign Up... -->
+    <string name="titleLogin">Login</string>
+    <string name="titleSignUp">Sign Up</string>
+    <string name="loginUser">Username </string>
+    <string name="passwordUser">Password </string>
+    <string name="repeatPassword">Confirm your password </string>
+    <string name="usernamePlaceholder">Enter your username</string>
+    <string name="passwordPlaceholder">Enter your password</string>
+    <string name="password2Placeholder">Please repeat your password</string>
+    <string name="submitButton">Submit </string>
+    <string name="textToSignUp">Don\'t have an account yet? Sign up here</string>
+
+</resources>
