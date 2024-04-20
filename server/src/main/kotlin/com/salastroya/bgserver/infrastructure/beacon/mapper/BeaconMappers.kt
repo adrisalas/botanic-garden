@@ -1,7 +1,8 @@
-package com.salastroya.bgserver.infrastructure.beacon
+package com.salastroya.bgserver.infrastructure.beacon.mapper
 
-import com.salastroya.bgserver.core.beacon.Beacon
-import com.salastroya.bgserver.core.beacon.Item
+import com.salastroya.bgserver.core.beacon.model.Beacon
+import com.salastroya.bgserver.core.beacon.model.Item
+import com.salastroya.bgserver.infrastructure.beacon.dto.BeaconDto
 
 fun BeaconDto.toModel(): Beacon {
     if (this.itemId == null || this.itemType == null) {

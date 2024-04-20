@@ -1,5 +1,6 @@
-package com.salastroya.bgserver.infrastructure.auth
+package com.salastroya.bgserver.infrastructure.auth.repository
 
+import com.salastroya.bgserver.infrastructure.auth.dto.UserDto
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository

@@ -1,4 +1,4 @@
-package com.salastroya.bgserver.core.plant
+package com.salastroya.bgserver.core.plant.model
 
 data class Plant(
     val id: Int?,

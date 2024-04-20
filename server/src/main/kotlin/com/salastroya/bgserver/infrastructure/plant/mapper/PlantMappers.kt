@@ -1,7 +1,8 @@
-package com.salastroya.bgserver.infrastructure.plant
+package com.salastroya.bgserver.infrastructure.plant.mapper
 
-import com.salastroya.bgserver.core.plant.Plant
-import com.salastroya.bgserver.core.plant.PlantDetails
+import com.salastroya.bgserver.core.plant.model.Plant
+import com.salastroya.bgserver.core.plant.model.PlantDetails
+import com.salastroya.bgserver.infrastructure.plant.dto.PlantDto
 
 
 fun Plant.toDto() = PlantDto(

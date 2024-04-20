@@ -1,5 +1,6 @@
-package com.salastroya.bgserver.infrastructure.plant
+package com.salastroya.bgserver.infrastructure.plant.repository
 
+import com.salastroya.bgserver.infrastructure.plant.dto.PlantDto
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository

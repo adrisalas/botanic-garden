@@ -1,7 +1,7 @@
 package com.salastroya.bgserver.application.beacon
 
 import com.salastroya.bgserver.application.ErrorMessage
-import com.salastroya.bgserver.core.beacon.Beacon
+import com.salastroya.bgserver.core.beacon.model.Beacon
 import com.salastroya.bgserver.core.beacon.BeaconUseCases
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
 import io.github.oshai.kotlinlogging.KotlinLogging

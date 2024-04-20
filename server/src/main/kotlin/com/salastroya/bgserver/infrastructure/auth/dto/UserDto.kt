@@ -1,4 +1,4 @@
-package com.salastroya.bgserver.infrastructure.auth
+package com.salastroya.bgserver.infrastructure.auth.dto
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table

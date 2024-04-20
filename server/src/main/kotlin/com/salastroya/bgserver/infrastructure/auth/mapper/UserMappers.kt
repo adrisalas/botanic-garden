@@ -1,6 +1,7 @@
-package com.salastroya.bgserver.infrastructure.auth
+package com.salastroya.bgserver.infrastructure.auth.mapper
 
 import com.salastroya.bgserver.core.auth.model.User
+import com.salastroya.bgserver.infrastructure.auth.dto.UserDto
 
 fun UserDto.toModel(): User {
     return User(

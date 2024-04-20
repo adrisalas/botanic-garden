@@ -1,7 +1,10 @@
 package com.salastroya.bgserver.infrastructure.beacon
 
-import com.salastroya.bgserver.core.beacon.Beacon
-import com.salastroya.bgserver.core.beacon.BeaconRepository
+import com.salastroya.bgserver.core.beacon.model.Beacon
+import com.salastroya.bgserver.core.beacon.repository.BeaconRepository
+import com.salastroya.bgserver.infrastructure.beacon.mapper.toDto
+import com.salastroya.bgserver.infrastructure.beacon.mapper.toModel
+import com.salastroya.bgserver.infrastructure.beacon.repository.BeaconR2bcRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service

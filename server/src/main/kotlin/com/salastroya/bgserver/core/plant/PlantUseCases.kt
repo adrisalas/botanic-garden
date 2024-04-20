@@ -1,13 +1,15 @@
 package com.salastroya.bgserver.core.plant
 
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
+import com.salastroya.bgserver.core.plant.model.Plant
+import com.salastroya.bgserver.core.plant.repository.PlantRepository
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PlantUseCases(private val repository: PlantRepository) {
-    
+
     fun findAll(): Flow<Plant> {
         return repository.findAll()
     }

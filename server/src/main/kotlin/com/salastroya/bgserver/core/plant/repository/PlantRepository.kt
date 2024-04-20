@@ -1,5 +1,6 @@
-package com.salastroya.bgserver.core.plant
+package com.salastroya.bgserver.core.plant.repository
 
+import com.salastroya.bgserver.core.plant.model.Plant
 import kotlinx.coroutines.flow.Flow
 
 interface PlantRepository {

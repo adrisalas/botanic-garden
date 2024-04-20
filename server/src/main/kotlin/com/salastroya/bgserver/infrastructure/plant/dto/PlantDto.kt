@@ -1,6 +1,6 @@
-package com.salastroya.bgserver.infrastructure.plant
+package com.salastroya.bgserver.infrastructure.plant.dto
 
-import com.salastroya.bgserver.core.plant.Season
+import com.salastroya.bgserver.core.plant.model.Season
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.Month

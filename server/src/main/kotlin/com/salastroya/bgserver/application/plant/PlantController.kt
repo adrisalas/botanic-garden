@@ -2,7 +2,7 @@ package com.salastroya.bgserver.application.plant
 
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.plant.Plant
+import com.salastroya.bgserver.core.plant.model.Plant
 import com.salastroya.bgserver.core.plant.PlantUseCases
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow

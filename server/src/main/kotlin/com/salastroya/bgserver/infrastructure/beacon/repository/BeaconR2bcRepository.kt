@@ -1,5 +1,6 @@
-package com.salastroya.bgserver.infrastructure.beacon
+package com.salastroya.bgserver.infrastructure.beacon.repository
 
+import com.salastroya.bgserver.infrastructure.beacon.dto.BeaconDto
 import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository

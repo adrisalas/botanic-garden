@@ -1,7 +1,11 @@
 package com.salastroya.bgserver.core.beacon
 
+import com.salastroya.bgserver.core.beacon.model.Beacon
+import com.salastroya.bgserver.core.beacon.model.Item
+import com.salastroya.bgserver.core.beacon.model.ItemType
+import com.salastroya.bgserver.core.beacon.repository.BeaconRepository
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.plant.PlantRepository
+import com.salastroya.bgserver.core.plant.repository.PlantRepository
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,7 +15,7 @@ class BeaconUseCases(
     private val repository: BeaconRepository,
     private val plantRepository: PlantRepository
 ) {
-    
+
     fun findAll(): Flow<Beacon> {
         return repository.findAll()
     }

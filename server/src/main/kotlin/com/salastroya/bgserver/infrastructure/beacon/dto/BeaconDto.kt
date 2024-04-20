@@ -1,6 +1,6 @@
-package com.salastroya.bgserver.infrastructure.beacon
+package com.salastroya.bgserver.infrastructure.beacon.dto
 
-import com.salastroya.bgserver.core.beacon.ItemType
+import com.salastroya.bgserver.core.beacon.model.ItemType
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 

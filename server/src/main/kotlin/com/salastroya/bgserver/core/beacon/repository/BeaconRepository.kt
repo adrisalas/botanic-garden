@@ -1,5 +1,6 @@
-package com.salastroya.bgserver.core.beacon
+package com.salastroya.bgserver.core.beacon.repository
 
+import com.salastroya.bgserver.core.beacon.model.Beacon
 import kotlinx.coroutines.flow.Flow
 
 interface BeaconRepository {

@@ -63,8 +63,8 @@ class AuthController(private val service: AuthUseCases) {
     }
 
     @PostMapping("/login")
-    suspend fun login(@RequestBody loginRequest: UserLoginQuery): String {
-        return service.getLoginToken(loginRequest)
+    suspend fun login(@RequestBody loginRequest: UserLoginQuery): TokenDto {
+        return TokenDto(service.getLoginToken(loginRequest))
     }
 
     @ExceptionHandler(InvalidUseCaseException::class)
