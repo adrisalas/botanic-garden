@@ -1,11 +1,11 @@
-package com.salastroya.bgserver.application.plant
+package com.salastroya.bgserver.application.news
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.plant.PlantUseCases
-import com.salastroya.bgserver.core.plant.model.Plant
+import com.salastroya.bgserver.core.news.NewsUseCases
+import com.salastroya.bgserver.core.news.model.News
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus.*
@@ -14,65 +14,65 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("/api/plants")
-class PlantController(
-    private val service: PlantUseCases,
+@RequestMapping("/api/news")
+class NewsController(
+    private val service: NewsUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
     private val log = KotlinLogging.logger {}
 
     @GetMapping
-    fun findAllPlants(): Flow<Plant> {
+    fun findAllNews(): Flow<News> {
         return service.findAll()
     }
 
     @GetMapping("/{id}")
-    suspend fun findPlantById(@PathVariable id: Int): Plant {
+    suspend fun findNewsById(@PathVariable id: Int): News {
         return service.findById(id)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
-                "Plant with id: $id not found"
+                "News with id: $id not found"
             )
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    suspend fun insertPlant(
-        @RequestBody plant: Plant,
+    suspend fun insertNews(
+        @RequestBody news: News,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): Plant {
+    ): News {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (plant.id != null) {
+        if (news.id != null) {
             throw ResponseStatusException(
                 BAD_REQUEST,
-                "You cannot provide id for creating a plant"
+                "You cannot provide id for creating a news"
             )
         }
-        return service.insert(plant)
+        return service.insert(news)
     }
 
     @PutMapping("/{id}")
-    suspend fun updatePlant(
+    suspend fun updateNews(
         @PathVariable id: Int,
-        @RequestBody plant: Plant,
+        @RequestBody news: News,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): Plant {
+    ): News {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (plant.id != null && id != plant.id) {
+        if (news.id != null && id != news.id) {
             throw ResponseStatusException(
                 BAD_REQUEST,
                 "Mismatch between URI id and body id"
             )
         }
-        return service.update(plant.copy(id = id))
+        return service.update(news.copy(id = id))
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    suspend fun deletePlant(
+    suspend fun deleteNews(
         @PathVariable id: Int,
         @RequestHeader("Authorization") authorizationHeader: String
     ) {

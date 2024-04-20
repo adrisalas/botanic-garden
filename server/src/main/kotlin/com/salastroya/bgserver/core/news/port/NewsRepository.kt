@@ -1,13 +1,13 @@
-package com.salastroya.bgserver.core.beacon.repository
+package com.salastroya.bgserver.core.news.port
 
-import com.salastroya.bgserver.core.beacon.model.Beacon
+import com.salastroya.bgserver.core.news.model.News
 import kotlinx.coroutines.flow.Flow
 
-interface BeaconRepository {
-    fun findAll(): Flow<Beacon>
-    suspend fun findById(id: String): Beacon?
-    suspend fun existsById(id: String): Boolean
-    suspend fun insert(beacon: Beacon): Beacon
-    suspend fun update(beacon: Beacon): Beacon
-    suspend fun delete(id: String)
+interface NewsRepository {
+    fun findAll(): Flow<News>
+    suspend fun findById(id: Int): News?
+    suspend fun existsById(id: Int): Boolean
+    suspend fun insert(news: News): News
+    suspend fun update(news: News): News
+    suspend fun delete(id: Int)
 }

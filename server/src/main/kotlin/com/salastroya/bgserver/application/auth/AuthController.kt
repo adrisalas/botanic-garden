@@ -11,7 +11,7 @@ import com.salastroya.bgserver.core.auth.model.User
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -26,27 +26,36 @@ class AuthController(
     private val log = KotlinLogging.logger {}
 
     @GetMapping("/users")
-    fun findAllUsers(): Flow<User> {
+    fun findAllUsers(
+        @RequestHeader("Authorization") authorizationHeader: String
+    ): Flow<User> {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         return service.findAll()
     }
 
     @GetMapping("/users/{username}")
-    suspend fun findUserByUsername(@PathVariable username: String): User {
+    suspend fun findUserByUsername(
+        @PathVariable username: String,
+        @RequestHeader("Authorization") authorizationHeader: String
+    ): User {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         return service.findByUsername(username)
             ?: throw ResponseStatusException(
-                HttpStatus.NOT_FOUND,
+                NOT_FOUND,
                 "User with username: $username not found"
             )
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(CREATED)
     suspend fun createUser(@RequestBody newUser: CreateUserCommand): User {
         return service.createUser(newUser)
     }
 
     @DeleteMapping("/users/{username}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(NO_CONTENT)
     suspend fun deleteUser(
         @PathVariable username: String,
         @RequestHeader("Authorization") authorizationHeader: String
@@ -66,7 +75,7 @@ class AuthController(
 
         if (username != changePasswordCommand.username) {
             throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
+                BAD_REQUEST,
                 "Mismatch between URI and body for field username"
             )
         }
@@ -80,21 +89,21 @@ class AuthController(
     }
 
     @ExceptionHandler(InvalidUseCaseException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(BAD_REQUEST)
     suspend fun badRequestHandler(ex: InvalidUseCaseException): ErrorMessage {
         log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(UnauthorizedException::class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(UNAUTHORIZED)
     suspend fun unauthorizedException(ex: UnauthorizedException): ErrorMessage {
         log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(Throwable::class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     suspend fun internalErrorHandler(ex: Throwable): ErrorMessage {
         log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")

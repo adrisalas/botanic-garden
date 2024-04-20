@@ -1,9 +1,9 @@
-package com.salastroya.bgserver.core.news
+package com.salastroya.bgserver.core.news.model
 
 import java.time.LocalDateTime
 
-data class GardenNews(
-    val id: Int,
+data class News(
+    val id: Int?,
     val title: String,
     val subtitle: String,
     val description: String,
