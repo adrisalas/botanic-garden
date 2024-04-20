@@ -1,9 +1,11 @@
 package com.salastroya.bgserver.application.plant
 
+import com.auth0.jwt.exceptions.JWTVerificationException
+import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.plant.model.Plant
 import com.salastroya.bgserver.core.plant.PlantUseCases
+import com.salastroya.bgserver.core.plant.model.Plant
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus.*
@@ -13,7 +15,10 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/plants")
-class PlantController(private val service: PlantUseCases) {
+class PlantController(
+    private val service: PlantUseCases,
+    private val authHelper: AuthorizationHelperService
+) {
 
     private val log = KotlinLogging.logger {}
 
@@ -33,7 +38,12 @@ class PlantController(private val service: PlantUseCases) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    suspend fun insertPlant(@RequestBody plant: Plant): Plant {
+    suspend fun insertPlant(
+        @RequestBody plant: Plant,
+        @RequestHeader("Authorization") authorizationHeader: String
+    ): Plant {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         if (plant.id != null) {
             throw ResponseStatusException(
                 BAD_REQUEST,
@@ -44,7 +54,12 @@ class PlantController(private val service: PlantUseCases) {
     }
 
     @PutMapping("/{id}")
-    suspend fun updatePlant(@PathVariable id: Int, @RequestBody plant: Plant): Plant {
+    suspend fun updatePlant(
+        @PathVariable id: Int, @RequestBody plant: Plant,
+        @RequestHeader("Authorization") authorizationHeader: String
+    ): Plant {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         if (plant.id != null && id != plant.id) {
             throw ResponseStatusException(
                 BAD_REQUEST,
@@ -56,24 +71,32 @@ class PlantController(private val service: PlantUseCases) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    suspend fun deletePlant(@PathVariable id: Int) {
+    suspend fun deletePlant(
+        @PathVariable id: Int,
+        @RequestHeader("Authorization") authorizationHeader: String
+    ) {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         service.delete(id)
     }
 
-    @ExceptionHandler(InvalidUseCaseException::class)
+    @ExceptionHandler(InvalidUseCaseException::class, JWTVerificationException::class)
     @ResponseStatus(BAD_REQUEST)
-    suspend fun badRequestHandler(ex: InvalidUseCaseException): ErrorMessage {
+    suspend fun badRequestHandler(ex: RuntimeException): ErrorMessage {
+        log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(Throwable::class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     suspend fun internalErrorHandler(ex: Throwable): ErrorMessage {
+        log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(ResponseStatusException::class)
     suspend fun responseStatusExceptionHandler(ex: ResponseStatusException): ResponseEntity<ErrorMessage> {
+        log.debug { ex.message }
         val error = ErrorMessage(ex.reason ?: "No reason specified")
         return ResponseEntity(error, ex.statusCode)
     }

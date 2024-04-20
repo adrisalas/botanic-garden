@@ -1,5 +1,6 @@
 package com.salastroya.bgserver.application.auth
 
+import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.auth.AuthUseCases
 import com.salastroya.bgserver.core.auth.command.ChangePasswordCommand
@@ -17,7 +18,10 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(private val service: AuthUseCases) {
+class AuthController(
+    private val service: AuthUseCases,
+    private val authHelper: AuthorizationHelperService
+) {
 
     private val log = KotlinLogging.logger {}
 
@@ -43,15 +47,23 @@ class AuthController(private val service: AuthUseCases) {
 
     @DeleteMapping("/users/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    suspend fun deleteUser(@PathVariable username: String) {
+    suspend fun deleteUser(
+        @PathVariable username: String,
+        @RequestHeader("Authorization") authorizationHeader: String
+    ) {
+        authHelper.shouldBeAdmin(authorizationHeader)
+
         service.delete(username)
     }
 
     @PostMapping("/users/{username}/password")
     suspend fun changePassword(
         @PathVariable username: String,
-        @RequestBody changePasswordCommand: ChangePasswordCommand
+        @RequestBody changePasswordCommand: ChangePasswordCommand,
+        @RequestHeader("Authorization") authorizationHeader: String
     ): User {
+        authHelper.shouldBeTheUser(authorizationHeader, username)
+
         if (username != changePasswordCommand.username) {
             throw ResponseStatusException(
                 HttpStatus.BAD_REQUEST,
@@ -70,23 +82,27 @@ class AuthController(private val service: AuthUseCases) {
     @ExceptionHandler(InvalidUseCaseException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     suspend fun badRequestHandler(ex: InvalidUseCaseException): ErrorMessage {
+        log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(UnauthorizedException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     suspend fun unauthorizedException(ex: UnauthorizedException): ErrorMessage {
+        log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(Throwable::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     suspend fun internalErrorHandler(ex: Throwable): ErrorMessage {
+        log.debug { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(ResponseStatusException::class)
     suspend fun responseStatusExceptionHandler(ex: ResponseStatusException): ResponseEntity<ErrorMessage> {
+        log.debug { ex.reason }
         val error = ErrorMessage(ex.reason ?: "No reason specified")
         return ResponseEntity(error, ex.statusCode)
     }

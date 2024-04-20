@@ -2,7 +2,6 @@ package com.salastroya.bgserver.core.auth.service
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.salastroya.bgserver.core.auth.model.ISSUER
 import io.mockk.junit5.MockKExtension
@@ -10,9 +9,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import java.time.Instant
 import java.util.*
-
 
 @ExtendWith(MockKExtension::class)
 class JWTServiceTest {
@@ -21,8 +18,8 @@ class JWTServiceTest {
         private const val PASSPHRASE = "Potato2024"
         private const val VALID_TOKEN =
             "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9" +
-                    ".eyJ1c2VybmFtZSI6ImFkcmkiLCJpc0FkbWluIjp0cnVlLCJpc3MiOiJiZ3NlcnZlciIsImlhdCI6MS43MTM2MTEyMjk4ODQ0MjRFOX0" +
-                    ".9Q9jEdXJAnuhCNIAZKwY8zkC-eTlZLnapZB2ofEPmkpVwvsAs07HGnq5wtURoyIIWtrbgfo0FplfXRbsolRShQ"
+                    ".eyJ1c2VybmFtZSI6ImFkcmkiLCJpc0FkbWluIjp0cnVlLCJpc3MiOiJiZ3NlcnZlciIsImlhdCI6MTcxMzY1MjQ2M30" +
+                    ".A1f01-zTRm9t2ddbC_EZg1_5_7abhtyEjXsWNbbP_CgjT_POhTg462S7UXOSo8KbOtICVRrcSKTKsEl0cNuFRw"
 
         private const val INVALID_TOKEN =
             "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9" +
@@ -30,7 +27,7 @@ class JWTServiceTest {
                     ".FB2-9blqHv1vsj2cE4PVvOVibhWVfFjJbOFE4xp8D4Sc6J_OWsCj_YznnhQyySr6BiO_7j-b-1UB8aeIKInp7Q"
     }
 
-    private val objectMapper: ObjectMapper = jacksonObjectMapper().registerModules(JavaTimeModule())
+    private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     private val service: JWTService = JWTService(PASSPHRASE, objectMapper)
 
@@ -50,7 +47,7 @@ class JWTServiceTest {
     fun decodeValidToken() {
         val jwt = service.decodeToken(VALID_TOKEN)
 
-        assertThat(jwt.iat).isEqualTo(Instant.ofEpochSecond(1713611229L, 884424000L))
+        assertThat(jwt.iat).isEqualTo(1713652463L)
         assertThat(jwt.iss).isEqualTo(ISSUER)
         assertThat(jwt.username).isEqualTo(USERNAME)
         assertThat(jwt.isAdmin).isEqualTo(true)
