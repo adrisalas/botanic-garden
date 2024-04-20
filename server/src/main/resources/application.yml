@@ -32,3 +32,6 @@ server:
   ssl:
     bundle: bgserver
     enabled: true
+  error:
+    whitelabel:
+      enabled: false
