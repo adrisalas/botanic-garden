@@ -4,10 +4,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.beacon.BeaconUseCases
-import com.salastroya.bgserver.core.beacon.model.Beacon
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -23,13 +23,13 @@ class BeaconController(
     private val log = KotlinLogging.logger {}
 
     @GetMapping
-    fun findAllBeacons(): Flow<Beacon> {
-        return useCases.findAll()
+    fun findAllBeacons(): Flow<BeaconDto> {
+        return useCases.findAll().map { it.toDto() }
     }
 
     @GetMapping("/{id}")
-    suspend fun findBeaconById(@PathVariable id: String): Beacon {
-        return useCases.findById(id)
+    suspend fun findBeaconById(@PathVariable id: String): BeaconDto {
+        return useCases.findById(id)?.toDto()
             ?: throw ResponseStatusException(
                 NOT_FOUND,
                 "Beacon with id: $id not found"
@@ -39,22 +39,22 @@ class BeaconController(
     @PostMapping
     @ResponseStatus(CREATED)
     suspend fun insertBeacon(
-        @RequestBody beacon: Beacon,
+        @RequestBody beacon: BeaconDto,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): Beacon {
+    ): BeaconDto {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return useCases.insert(beacon)
+        return useCases.insert(beacon.toModel()).toDto()
     }
 
     @PutMapping
     suspend fun updateBeacon(
-        @RequestBody beacon: Beacon,
+        @RequestBody beacon: BeaconDto,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): Beacon {
+    ): BeaconDto {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return useCases.update(beacon)
+        return useCases.update(beacon.toModel()).toDto()
     }
 
     @DeleteMapping("/{id}")
