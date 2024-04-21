@@ -1,11 +1,11 @@
-package com.salastroya.bgserver.application.news
+package com.salastroya.bgserver.application.poi
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.news.NewsUseCases
-import com.salastroya.bgserver.core.news.model.News
+import com.salastroya.bgserver.core.poi.PoiUseCases
+import com.salastroya.bgserver.core.poi.model.Poi
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus.*
@@ -14,65 +14,65 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("/api/news")
-class NewsController(
-    private val useCases: NewsUseCases,
+@RequestMapping("/api/poi")
+class PoiController(
+    private val useCases: PoiUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
     private val log = KotlinLogging.logger {}
 
     @GetMapping
-    fun findAllNews(): Flow<News> {
+    fun findAllPoi(): Flow<Poi> {
         return useCases.findAll()
     }
 
     @GetMapping("/{id}")
-    suspend fun findNewsById(@PathVariable id: Int): News {
+    suspend fun findPoiById(@PathVariable id: Int): Poi {
         return useCases.findById(id)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
-                "News with id: $id not found"
+                "Poi with id: $id not found"
             )
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    suspend fun insertNews(
-        @RequestBody news: News,
+    suspend fun insertPoi(
+        @RequestBody poi: Poi,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
+    ): Poi {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (news.id != null) {
+        if (poi.id != null) {
             throw ResponseStatusException(
                 BAD_REQUEST,
-                "You cannot provide id for creating a news"
+                "You cannot provide id for creating a poi"
             )
         }
-        return useCases.insert(news)
+        return useCases.insert(poi)
     }
 
     @PutMapping("/{id}")
-    suspend fun updateNews(
+    suspend fun updatePoi(
         @PathVariable id: Int,
-        @RequestBody news: News,
+        @RequestBody poi: Poi,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
+    ): Poi {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (news.id != null && id != news.id) {
+        if (poi.id != null && id != poi.id) {
             throw ResponseStatusException(
                 BAD_REQUEST,
                 "Mismatch between URI id and body id"
             )
         }
-        return useCases.update(news.copy(id = id))
+        return useCases.update(poi.copy(id = id))
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    suspend fun deleteNews(
+    suspend fun deletePoi(
         @PathVariable id: Int,
         @RequestHeader("Authorization") authorizationHeader: String
     ) {

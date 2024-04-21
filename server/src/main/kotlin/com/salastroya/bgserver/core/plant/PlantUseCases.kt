@@ -18,6 +18,10 @@ class PlantUseCases(private val repository: PlantRepository) {
         return repository.findById(id)
     }
 
+    suspend fun existsById(id: Int): Boolean {
+        return repository.existsById(id)
+    }
+
     @Transactional
     @Throws(InvalidUseCaseException::class)
     suspend fun insert(plant: Plant): Plant {

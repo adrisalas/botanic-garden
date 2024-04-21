@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/plants")
 class PlantController(
-    private val service: PlantUseCases,
+    private val useCases: PlantUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
@@ -24,12 +24,12 @@ class PlantController(
 
     @GetMapping
     fun findAllPlants(): Flow<Plant> {
-        return service.findAll()
+        return useCases.findAll()
     }
 
     @GetMapping("/{id}")
     suspend fun findPlantById(@PathVariable id: Int): Plant {
-        return service.findById(id)
+        return useCases.findById(id)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
                 "Plant with id: $id not found"
@@ -50,7 +50,7 @@ class PlantController(
                 "You cannot provide id for creating a plant"
             )
         }
-        return service.insert(plant)
+        return useCases.insert(plant)
     }
 
     @PutMapping("/{id}")
@@ -67,7 +67,7 @@ class PlantController(
                 "Mismatch between URI id and body id"
             )
         }
-        return service.update(plant.copy(id = id))
+        return useCases.update(plant.copy(id = id))
     }
 
     @DeleteMapping("/{id}")
@@ -78,7 +78,7 @@ class PlantController(
     ) {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        service.delete(id)
+        useCases.delete(id)
     }
 
     @ExceptionHandler(InvalidUseCaseException::class, JWTVerificationException::class)

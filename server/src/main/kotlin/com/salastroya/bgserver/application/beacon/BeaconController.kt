@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/beacons")
 class BeaconController(
-    private val service: BeaconUseCases,
+    private val useCases: BeaconUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
@@ -24,12 +24,12 @@ class BeaconController(
 
     @GetMapping
     fun findAllBeacons(): Flow<Beacon> {
-        return service.findAll()
+        return useCases.findAll()
     }
 
     @GetMapping("/{id}")
     suspend fun findBeaconById(@PathVariable id: String): Beacon {
-        return service.findById(id)
+        return useCases.findById(id)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
                 "Beacon with id: $id not found"
@@ -44,7 +44,7 @@ class BeaconController(
     ): Beacon {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return service.insert(beacon)
+        return useCases.insert(beacon)
     }
 
     @PutMapping
@@ -54,7 +54,7 @@ class BeaconController(
     ): Beacon {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return service.update(beacon)
+        return useCases.update(beacon)
     }
 
     @DeleteMapping("/{id}")
@@ -65,7 +65,7 @@ class BeaconController(
     ) {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        service.delete(id)
+        useCases.delete(id)
     }
 
     @ExceptionHandler(InvalidUseCaseException::class, JWTVerificationException::class)

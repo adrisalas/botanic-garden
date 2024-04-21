@@ -5,7 +5,8 @@ import com.salastroya.bgserver.core.beacon.model.Item
 import com.salastroya.bgserver.core.beacon.model.ItemType
 import com.salastroya.bgserver.core.beacon.repository.BeaconRepository
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.plant.repository.PlantRepository
+import com.salastroya.bgserver.core.plant.PlantUseCases
+import com.salastroya.bgserver.core.poi.PoiUseCases
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BeaconUseCases(
     private val repository: BeaconRepository,
-    private val plantRepository: PlantRepository
+    private val plantUseCases: PlantUseCases,
+    private val poiUseCases: PoiUseCases
 ) {
 
     fun findAll(): Flow<Beacon> {
@@ -45,8 +47,8 @@ class BeaconUseCases(
 
     private suspend fun isItemExisting(item: Item): Boolean {
         return when (item.type) {
-            ItemType.PLANT -> plantRepository.existsById(item.id)
-            ItemType.LOCATION -> TODO()
+            ItemType.PLANT -> plantUseCases.existsById(item.id)
+            ItemType.POI -> poiUseCases.existsById(item.id)
         }
     }
 

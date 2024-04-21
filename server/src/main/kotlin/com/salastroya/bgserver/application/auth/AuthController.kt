@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val service: AuthUseCases,
+    private val useCases: AuthUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
@@ -31,7 +31,7 @@ class AuthController(
     ): Flow<User> {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return service.findAll()
+        return useCases.findAll()
     }
 
     @GetMapping("/users/{username}")
@@ -41,7 +41,7 @@ class AuthController(
     ): User {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        return service.findByUsername(username)
+        return useCases.findByUsername(username)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
                 "User with username: $username not found"
@@ -51,7 +51,7 @@ class AuthController(
     @PostMapping("/users")
     @ResponseStatus(CREATED)
     suspend fun createUser(@RequestBody newUser: CreateUserCommand): User {
-        return service.createUser(newUser)
+        return useCases.createUser(newUser)
     }
 
     @DeleteMapping("/users/{username}")
@@ -62,7 +62,7 @@ class AuthController(
     ) {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        service.delete(username)
+        useCases.delete(username)
     }
 
     @PostMapping("/users/{username}/password")
@@ -80,12 +80,12 @@ class AuthController(
             )
         }
 
-        return service.updatePassword(changePasswordCommand)
+        return useCases.updatePassword(changePasswordCommand)
     }
 
     @PostMapping("/login")
     suspend fun login(@RequestBody loginRequest: UserLoginQuery): TokenDto {
-        return TokenDto(service.getLoginToken(loginRequest))
+        return TokenDto(useCases.getLoginToken(loginRequest))
     }
 
     @ExceptionHandler(InvalidUseCaseException::class)
