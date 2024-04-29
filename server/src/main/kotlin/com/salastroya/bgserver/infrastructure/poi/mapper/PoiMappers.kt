@@ -6,6 +6,7 @@ import com.salastroya.bgserver.infrastructure.poi.dto.PoiDto
 fun PoiDto.toModel(): Poi {
     return Poi(
         id = this.id,
+        name = this.name,
         description = this.description,
         image = this.image
     )
@@ -14,6 +15,7 @@ fun PoiDto.toModel(): Poi {
 fun Poi.toDto(): PoiDto {
     return PoiDto(
         id = this.id,
+        name = this.name,
         description = this.description,
         image = this.image
     )
