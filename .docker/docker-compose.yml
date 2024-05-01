@@ -23,7 +23,7 @@ services:
       - PEPPER_SECRET=${PEPPER_SECRET}
       - JWT_SECRET=${JWT_SECRET}
       - CERT_PATH=/bgserver/certs/bgserver-cert.pem
-      - PRIVATE_KEY_PATH=/bgserver/certs/bgserver-cert.pem
+      - PRIVATE_KEY_PATH=/bgserver/certs/bgserver-key.pem
     volumes:
       - ${CERT_PATH}:/bgserver/certs/bgserver-cert.pem:ro
       - ${PRIVATE_KEY_PATH}:/bgserver/certs/bgserver-key.pem:ro
