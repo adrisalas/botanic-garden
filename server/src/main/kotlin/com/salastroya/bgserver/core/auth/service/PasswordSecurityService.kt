@@ -12,7 +12,7 @@ private const val PROVIDER_BOUNCY_CASTLE = "BC"
 
 @Service
 class PasswordSecurityService(
-    @Value("\${custom.security.passphrase}") private val pepper: String,
+    @Value("\${custom.security.pepper}") private val pepper: String,
 ) {
 
     init {

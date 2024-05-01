@@ -11,13 +11,11 @@ spring:
   output.ansi.enabled: always
   ssl:
     bundle:
-      jks:
+      pem:
         bgserver:
           keystore:
-            location: "file:${PKCS12_PATH}"
-            password: ${PKCS12_PASSWORD}
-            type: PKCS12
-          reload-on-update: true
+            certificate: "file:${CERT_PATH}"
+            private-key: "file:${PRIVATE_KEY_PATH}"
   webflux:
     static-path-pattern: "/static/**"
 logging.level:
@@ -26,7 +24,8 @@ logging.level:
 
 custom:
   security:
-    passphrase: ${CUSTOM_PASSPHRASE}
+    pepper: ${PEPPER_SECRET}
+    jwt: ${JWT_SECRET}
 
 server:
   ssl:

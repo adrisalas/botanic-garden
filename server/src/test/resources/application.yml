@@ -20,4 +20,5 @@ logging.level:
 
 custom:
   security:
-    passphrase: "SuperSecretPassphrase"
+    pepper: "SuperSecretPassphrase"
+    jwt: "SuperSecretPassphrase"

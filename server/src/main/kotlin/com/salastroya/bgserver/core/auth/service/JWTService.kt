@@ -12,7 +12,7 @@ import java.util.*
 
 @Service
 class JWTService(
-    @Value("\${custom.security.passphrase}") private val secret: String,
+    @Value("\${custom.security.jwt}") private val secret: String,
     private val objectMapper: ObjectMapper
 ) {
     private val algorithm: Algorithm by lazy { Algorithm.HMAC512(secret) }
