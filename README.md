@@ -6,81 +6,37 @@ Android App for a Botanic Garden using IoT Beacons
 
 ⚠️ The current status of the project is work in progress
 
-## Local setup
+## Installation
 
-1. Generate a PKCS#12 certificate and store it somewhere:
+1. Generate the executables/statics files for each component:
 
-   ```sh
-   openssl req -newkey rsa:409 -new -nodes -x509 -days 365000 -keyout "bgserver-key.pem" -out "bgserver-cert.pem" -addext "subjectAltName=DNS:${fill_this},IP:${fill_this}"
-   ```
+   - [Server](./server/README.md)
+   - [Android](./android/README.md)
+   - [Admin Panel](./web/README.md)
 
-   ```sh
-   openssl pkcs12 -export -out "bgserver.p12" -inkey "bgserver-key.pem" -in "bgserver-cert.pem"
-   ```
+2. Get a PEM certificate:
 
-2. Set these environment variables:
-   - `POSTGRES_HOST` _(ex: localhost:5432)_
-   - `POSTGRES_DATABASE`
-   - `POSTGRES_USERNAME`
-   - `POSTGRES_PASSWORD`
-   - `PKCS12_PATH` _(ex: /etc/certs/bgserver20240101.p12)_
-   - `PKCS12_PASSWORD`
-   - `CUSTOM_PASSPHRASE`
-3. Build the app
-   ```sh
-   cd server && ./gradlew clean build
-   ```
-4. Run server
-   ```sh
-   ./gradlew :bootRun
-   ```
-
-## Docker
-
-1. Generate docker image:
-
-   ```sh
-   ./gradlew bootBuildImage --imageName=salastroya/bgserver
-   ```
-
-   - Save image:
-
-     ```docker
-     docker save salastroya/bgserver | gzip > bgserver.tar.gz
+   - **Option A:** Get it from a CA.
+   - **Option B:** Generate a self-signed a certificate.
+     ```sh
+     openssl req -newkey rsa:4096 -new -nodes -x509 -days 36500 -keyout "bgserver-key.pem" -out "bgserver-cert.pem" -addext "subjectAltName=DNS:${fill_this},IP:${fill_this}"
      ```
 
-   - Load image:
-     ```docker
-     docker load < bgserver.tar.gz
-     ```
+3. Set these environment variables:
 
-1. Obtain your SSL certificate from a trusted CA
+   - `POSTGRES_HOST` _(ex. localhost:5432)_
+   - `POSTGRES_DATABASE` _(ex. test)_
+   - `POSTGRES_USERNAME` _(ex. admin)_
+   - `POSTGRES_PASSWORD` _(ex. password)_
+   - `PEPPER_SECRET` _(ex. secretWordForPepper)_
+   - `JWT_SECRET` _(ex. secretWordForJWT)_
+   - `CERT_PATH` _(ex. /etc/ssl/bgserver-cert.pem)_
+   - `PRIVATE_KEY_PATH` _(ex. /etc/ssl/bgserver-key.pem)_
 
-1. Run docker:
-   - Via docker run:
-   ```sh
-   sudo docker run -d -p 8080:8080 -e POSTGRES_HOST=${fill_this} -e POSTGRES_DATABASE=${fill_this} -e POSTGRES_USERNAME=${fill_this } -e POSTGRES_PASSWORD=${fill_this} -e PKCS12_PATH=${fill_this} -e PKCS12_PASSWORD=${fill_this} -e CUSTOM_PASSPHRASE=${fill_this} -v ${fill_this}:${fill_this} --name bgserver salastroya/bgserver
-   ```
-   - Via a `docker-compose.yml`
+4. Run the server and the web in your domain
+
+   Feel free to run it as you want, in the folder [./.docker/](./.docker/) you can find a `nginx.conf` and a `docker-compose.yml` ready to be used.
+
    ```docker
-   name: bgserver
-   services:
-       bgserver:
-           container_name: bgserver
-           ports:
-               - 8080:8080
-           environment:
-               - POSTGRES_HOST=${fill_this}
-               - POSTGRES_DATABASE=${fill_this}
-               - POSTGRES_USERNAME=${fill_this}
-               - POSTGRES_PASSWORD=${fill_this}
-               - PKCS12_PATH=${fill_this}
-               - PKCS12_PASSWORD=${fill_this}
-               - CUSTOM_PASSPHRASE=${fill_this}
-           volumes:
-               - ${fill_this}:${fill_this}
-           image: salastroya/bgserver
-   ```
-   ```sh
    sudo docker compose up -d
    ```
