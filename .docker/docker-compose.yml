@@ -1,0 +1,35 @@
+name: bgserver
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static/:/usr/share/nginx/html/:ro
+      - ${CERT_PATH}:/etc/ssl/private/bgserver-cert.pem:ro
+      - ${PRIVATE_KEY_PATH}:/etc/ssl/private/bgserver-key.pem:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - default
+  bgserver:
+    deploy:
+      replicas: 2
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_DATABASE}
+      - PEPPER_SECRET=${PEPPER_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - CERT_PATH=/bgserver/certs/bgserver-cert.pem
+      - PRIVATE_KEY_PATH=/bgserver/certs/bgserver-cert.pem
+    volumes:
+      - ${CERT_PATH}:/bgserver/certs/bgserver-cert.pem:ro
+      - ${PRIVATE_KEY_PATH}:/bgserver/certs/bgserver-key.pem:ro
+    image: salastroya/bgserver
+    networks:
+      - default
+networks:
+  default:
+    name: bgserver_default
