@@ -91,27 +91,27 @@ class AuthController(
     @ExceptionHandler(InvalidUseCaseException::class)
     @ResponseStatus(BAD_REQUEST)
     suspend fun badRequestHandler(ex: InvalidUseCaseException): ErrorMessage {
-        log.debug { ex.message }
+        log.warn { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(UnauthorizedException::class)
     @ResponseStatus(UNAUTHORIZED)
     suspend fun unauthorizedException(ex: UnauthorizedException): ErrorMessage {
-        log.debug { ex.message }
+        log.warn { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(Throwable::class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     suspend fun internalErrorHandler(ex: Throwable): ErrorMessage {
-        log.debug { ex.message }
+        log.warn { ex.message }
         return ErrorMessage(ex.message ?: "")
     }
 
     @ExceptionHandler(ResponseStatusException::class)
     suspend fun responseStatusExceptionHandler(ex: ResponseStatusException): ResponseEntity<ErrorMessage> {
-        log.debug { ex.reason }
+        log.warn { ex.reason }
         val error = ErrorMessage(ex.reason ?: "No reason specified")
         return ResponseEntity(error, ex.statusCode)
     }

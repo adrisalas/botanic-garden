@@ -1,84 +1,58 @@
-package com.salastroya.bgserver.application.news
+package com.salastroya.bgserver.application.map
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.news.NewsUseCases
-import com.salastroya.bgserver.core.news.model.News
+import com.salastroya.bgserver.core.map.UserRouteUseCases
+import com.salastroya.bgserver.core.map.command.RequestRouteCommand
+import com.salastroya.bgserver.core.map.model.Route
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.TimeoutCancellationException
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("/api/news")
-class NewsController(
-    private val useCases: NewsUseCases,
+@RequestMapping("/api/map/my-route")
+class UserRouteController(
+    private val useCases: UserRouteUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
     private val log = KotlinLogging.logger {}
 
     @GetMapping
-    fun findAllNews(): Flow<News> {
-        return useCases.findAll()
-    }
+    suspend fun findMyRoute(
+        @RequestHeader("Authorization") authorizationHeader: String
+    ): Route {
+        val username = authHelper.extractUsername(authorizationHeader)
 
-    @GetMapping("/{id}")
-    suspend fun findNewsById(@PathVariable id: Int): News {
-        return useCases.findById(id)
+        return useCases.findRouteOfUser(username)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
-                "News with id: $id not found"
+                "You have no route generated."
             )
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    suspend fun insertNews(
-        @RequestBody news: News,
+    suspend fun requestRoute(
+        @RequestBody command: RequestRouteCommand,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
-        authHelper.shouldBeAdmin(authorizationHeader)
+    ): Route {
+        authHelper.shouldBeTheUser(authorizationHeader, command.username)
 
-        if (news.id != null) {
+        try {
+            return useCases.requestRoute(command)
+        } catch (ex: TimeoutCancellationException) {
             throw ResponseStatusException(
-                BAD_REQUEST,
-                "You cannot provide id for creating a news"
+                INTERNAL_SERVER_ERROR,
+                "Timeout. This route was not generated in a reasonable time.",
+                ex
             )
         }
-        return useCases.insert(news)
-    }
-
-    @PutMapping("/{id}")
-    suspend fun updateNews(
-        @PathVariable id: Int,
-        @RequestBody news: News,
-        @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
-        authHelper.shouldBeAdmin(authorizationHeader)
-
-        if (news.id != null && id != news.id) {
-            throw ResponseStatusException(
-                BAD_REQUEST,
-                "Mismatch between URI id and body id"
-            )
-        }
-        return useCases.update(news.copy(id = id))
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(NO_CONTENT)
-    suspend fun deleteNews(
-        @PathVariable id: Int,
-        @RequestHeader("Authorization") authorizationHeader: String
-    ) {
-        authHelper.shouldBeAdmin(authorizationHeader)
-
-        useCases.delete(id)
     }
 
     @ExceptionHandler(InvalidUseCaseException::class, JWTVerificationException::class)

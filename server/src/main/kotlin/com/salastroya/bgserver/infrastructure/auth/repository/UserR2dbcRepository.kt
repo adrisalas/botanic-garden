@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserR2bcRepository : CoroutineCrudRepository<UserDto, String> {
+interface UserR2dbcRepository : CoroutineCrudRepository<UserDto, String> {
     override fun findAll(): Flow<UserDto>
     suspend fun existsByUsername(username: String): Boolean
     suspend fun findByUsername(username: String): UserDto?

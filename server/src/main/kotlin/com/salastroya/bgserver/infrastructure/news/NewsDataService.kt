@@ -4,14 +4,14 @@ import com.salastroya.bgserver.core.news.model.News
 import com.salastroya.bgserver.core.news.port.NewsRepository
 import com.salastroya.bgserver.infrastructure.news.mapper.toDto
 import com.salastroya.bgserver.infrastructure.news.mapper.toModel
-import com.salastroya.bgserver.infrastructure.news.repository.NewsR2bcRepository
+import com.salastroya.bgserver.infrastructure.news.repository.NewsR2dbcRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
 
 @Service
 class NewsDataService(
-    private val repository: NewsR2bcRepository
+    private val repository: NewsR2dbcRepository
 ) : NewsRepository {
 
     override fun findAll(): Flow<News> {

@@ -4,14 +4,14 @@ import com.salastroya.bgserver.core.auth.model.User
 import com.salastroya.bgserver.core.auth.port.UserRepository
 import com.salastroya.bgserver.infrastructure.auth.mapper.toDto
 import com.salastroya.bgserver.infrastructure.auth.mapper.toModel
-import com.salastroya.bgserver.infrastructure.auth.repository.UserR2bcRepository
+import com.salastroya.bgserver.infrastructure.auth.repository.UserR2dbcRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
 
 @Service
 class UserDataService(
-    private val repository: UserR2bcRepository
+    private val repository: UserR2dbcRepository
 ) : UserRepository {
     override fun findAll(): Flow<User> {
         return repository.findAll()

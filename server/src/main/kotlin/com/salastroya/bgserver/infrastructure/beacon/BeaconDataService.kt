@@ -4,14 +4,14 @@ import com.salastroya.bgserver.core.beacon.model.Beacon
 import com.salastroya.bgserver.core.beacon.repository.BeaconRepository
 import com.salastroya.bgserver.infrastructure.beacon.mapper.toDto
 import com.salastroya.bgserver.infrastructure.beacon.mapper.toModel
-import com.salastroya.bgserver.infrastructure.beacon.repository.BeaconR2bcRepository
+import com.salastroya.bgserver.infrastructure.beacon.repository.BeaconR2dbcRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
 
 @Service
 class BeaconDataService(
-    private val repository: BeaconR2bcRepository
+    private val repository: BeaconR2dbcRepository
 ) : BeaconRepository {
 
     override fun findAll(): Flow<Beacon> {

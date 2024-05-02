@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface NewsR2bcRepository : CoroutineCrudRepository<NewsDto, Int> {
+interface NewsR2dbcRepository : CoroutineCrudRepository<NewsDto, Int> {
     override fun findAll(): Flow<NewsDto>
     override suspend fun findById(id: Int): NewsDto?
     override suspend fun existsById(id: Int): Boolean

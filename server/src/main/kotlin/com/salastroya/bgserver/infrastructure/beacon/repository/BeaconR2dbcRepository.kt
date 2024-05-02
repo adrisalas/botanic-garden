@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BeaconR2bcRepository : CoroutineCrudRepository<BeaconDto, String> {
+interface BeaconR2dbcRepository : CoroutineCrudRepository<BeaconDto, String> {
     override fun findAll(): Flow<BeaconDto>
     override suspend fun findById(id: String): BeaconDto?
     override suspend fun existsById(id: String): Boolean

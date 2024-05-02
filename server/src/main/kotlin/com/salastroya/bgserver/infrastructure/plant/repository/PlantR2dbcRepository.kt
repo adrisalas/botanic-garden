@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface PlantR2bcRepository : CoroutineCrudRepository<PlantDto, Int> {
+interface PlantR2dbcRepository : CoroutineCrudRepository<PlantDto, Int> {
     override fun findAll(): Flow<PlantDto>
     override suspend fun findById(id: Int): PlantDto?
     override suspend fun existsById(id: Int): Boolean

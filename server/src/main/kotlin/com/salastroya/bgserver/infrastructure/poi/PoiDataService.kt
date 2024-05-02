@@ -2,7 +2,7 @@ package com.salastroya.bgserver.infrastructure.poi
 
 import com.salastroya.bgserver.core.poi.model.Poi
 import com.salastroya.bgserver.core.poi.port.PoiRepository
-import com.salastroya.bgserver.infrastructure.news.repository.PoiR2bcRepository
+import com.salastroya.bgserver.infrastructure.news.repository.PoiR2dbcRepository
 import com.salastroya.bgserver.infrastructure.poi.mapper.toDto
 import com.salastroya.bgserver.infrastructure.poi.mapper.toModel
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PoiDataService(
-    private val repository: PoiR2bcRepository
+    private val repository: PoiR2dbcRepository
 ) : PoiRepository {
 
     override fun findAll(): Flow<Poi> {

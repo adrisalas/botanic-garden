@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface PoiR2bcRepository : CoroutineCrudRepository<PoiDto, Int> {
+interface PoiR2dbcRepository : CoroutineCrudRepository<PoiDto, Int> {
     override fun findAll(): Flow<PoiDto>
     override suspend fun findById(id: Int): PoiDto?
     override suspend fun existsById(id: Int): Boolean

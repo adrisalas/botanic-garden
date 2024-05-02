@@ -1,11 +1,12 @@
-package com.salastroya.bgserver.application.news
+package com.salastroya.bgserver.application.map
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.salastroya.bgserver.application.AuthorizationHelperService
 import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
-import com.salastroya.bgserver.core.news.NewsUseCases
-import com.salastroya.bgserver.core.news.model.News
+import com.salastroya.bgserver.core.map.RouteUseCases
+import com.salastroya.bgserver.core.map.command.CreateRouteCommand
+import com.salastroya.bgserver.core.map.model.Route
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus.*
@@ -14,65 +15,53 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-@RequestMapping("/api/news")
-class NewsController(
-    private val useCases: NewsUseCases,
+@RequestMapping("/api/map/routes")
+class RouteController(
+    private val useCases: RouteUseCases,
     private val authHelper: AuthorizationHelperService
 ) {
 
     private val log = KotlinLogging.logger {}
 
     @GetMapping
-    fun findAllNews(): Flow<News> {
-        return useCases.findAll()
+    fun findAllRoutes(): Flow<Route> {
+        return useCases.findAllPublicRoutes()
     }
 
     @GetMapping("/{id}")
-    suspend fun findNewsById(@PathVariable id: Int): News {
+    suspend fun findRouteById(@PathVariable id: Int): Route {
         return useCases.findById(id)
             ?: throw ResponseStatusException(
                 NOT_FOUND,
-                "News with id: $id not found"
+                "Route with id: $id not found"
             )
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    suspend fun insertNews(
-        @RequestBody news: News,
+    suspend fun insertRoute(
+        @RequestBody command: CreateRouteCommand,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
+    ): Route {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (news.id != null) {
-            throw ResponseStatusException(
-                BAD_REQUEST,
-                "You cannot provide id for creating a news"
-            )
-        }
-        return useCases.insert(news)
+        return useCases.insert(command)
     }
 
     @PutMapping("/{id}")
-    suspend fun updateNews(
+    suspend fun updateRoute(
         @PathVariable id: Int,
-        @RequestBody news: News,
+        @RequestBody command: CreateRouteCommand,
         @RequestHeader("Authorization") authorizationHeader: String
-    ): News {
+    ): Route {
         authHelper.shouldBeAdmin(authorizationHeader)
 
-        if (news.id != null && id != news.id) {
-            throw ResponseStatusException(
-                BAD_REQUEST,
-                "Mismatch between URI id and body id"
-            )
-        }
-        return useCases.update(news.copy(id = id))
+        return useCases.update(id, command)
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    suspend fun deleteNews(
+    suspend fun deleteRoute(
         @PathVariable id: Int,
         @RequestHeader("Authorization") authorizationHeader: String
     ) {

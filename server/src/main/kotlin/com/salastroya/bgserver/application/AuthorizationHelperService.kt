@@ -32,7 +32,12 @@ class AuthorizationHelperService(private val jwtService: JWTService) {
         }
     }
 
-    fun readJWTToken(header: String): String {
+    fun extractUsername(authorizationHeader: String): String {
+        val payload = jwtService.decodeToken(readJWTToken(authorizationHeader))
+        return payload.username
+    }
+
+    private fun readJWTToken(header: String): String {
         if (!header.contains(BEARER)) {
             return ""
         }
