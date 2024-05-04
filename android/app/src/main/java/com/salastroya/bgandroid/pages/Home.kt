@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,10 +30,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.R
 import com.salastroya.bgandroid.services.Routes
+import com.salastroya.bgandroid.services.auth.JWTService
 import com.salastroya.bgandroid.ui.theme.fontDancing
 
 @Composable
 fun HomePage(navController: NavController) {
+    val tokenJWT = remember { JWTService.jwtStore }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -71,19 +74,21 @@ fun HomePage(navController: NavController) {
                         textAlign = TextAlign.Center,
                         fontFamily = fontDancing
                     )
-                    Button(
-                        onClick = { navController.navigate(Routes.login) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = R.color.teal_700)
-                        ),
-                        elevation = ButtonDefaults.buttonElevation(
-                            defaultElevation = 16.dp
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 40.dp, vertical = 0.dp)
-                    ) {
-                        Text(text = stringResource(id = R.string.titleLogin))
+                    if (tokenJWT.isEmpty()) {
+                        Button(
+                            onClick = { navController.navigate(Routes.login) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(id = R.color.teal_700)
+                            ),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 16.dp
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 40.dp, vertical = 0.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.titleLogin))
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(100.dp))

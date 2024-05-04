@@ -1,5 +1,8 @@
 package com.salastroya.bgandroid.pages
 
+import android.content.Context
+import android.view.Gravity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -31,11 +35,19 @@ import com.salastroya.bgandroid.R
 import com.salastroya.bgandroid.components.LoginField
 import com.salastroya.bgandroid.components.PasswordField
 import com.salastroya.bgandroid.services.Routes
+import com.salastroya.bgandroid.services.auth.AuthService
+import com.salastroya.bgandroid.services.serverErrorMessage
+import kotlinx.coroutines.runBlocking
+import retrofit2.HttpException
+
 
 @Composable
 fun contentLogin(navController: NavController) {
+    val context = LocalContext.current
     val (username, setUsername) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
+    val (isErrorUsername, setErrorUsername) = remember { mutableStateOf(false) }
+    val (isErrorPasswd, setErrorPasswd) = remember { mutableStateOf(false) }
 
     Column {
         Row(
@@ -65,15 +77,28 @@ fun contentLogin(navController: NavController) {
                 onChange = { username: String -> setUsername(username) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 20.dp)
+                    .padding(0.dp, 20.dp),
+                isError = isErrorUsername
             )
             PasswordField(
                 value = password,
                 onChange = { passwd: String -> setPassword(passwd) },
-                submit = {},
+                submit = {
+                    runBlocking {
+                        callLoginService(
+                            username,
+                            password,
+                            context,
+                            navController,
+                            setErrorUsername,
+                            setErrorPasswd
+                        )
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 20.dp)
+                    .padding(0.dp, 20.dp),
+                isError = isErrorPasswd
             )
 
             val linkText = stringResource(id = R.string.textToSignUp)
@@ -105,7 +130,18 @@ fun contentLogin(navController: NavController) {
                 })
 
             Button(
-                onClick = { navController.navigate(Routes.login) },
+                onClick = {
+                    runBlocking {
+                        callLoginService(
+                            username,
+                            password,
+                            context,
+                            navController,
+                            setErrorUsername,
+                            setErrorPasswd
+                        )
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.teal_700)
                 ),
@@ -122,4 +158,41 @@ fun contentLogin(navController: NavController) {
 
 
     }
+}
+
+suspend fun callLoginService(
+    username: String,
+    password: String,
+    context: Context,
+    navController: NavController,
+    setErrorUserName: (error: Boolean) -> Unit,
+    setErrorPasswd: (error: Boolean) -> Unit
+) {
+    setErrorPasswd(false)
+    setErrorUserName(false)
+
+    val toast = Toast.makeText(context, "", Toast.LENGTH_SHORT)
+    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL, 0, 50)
+
+    if (username.isEmpty() || password.isEmpty()) {
+        toast.setText("Please enter your username and password.")
+        if (username.isEmpty()) {
+            setErrorUserName(true)
+        }
+        if (password.isEmpty()) {
+            setErrorPasswd(true)
+        }
+        return
+    }
+
+    try {
+        AuthService.login(username, password)
+        toast.setText("Login successful")
+        navController.navigate(Routes.home)
+    } catch (ex: HttpException) {
+        toast.setText(ex.serverErrorMessage())
+    } finally {
+        toast.show()
+    }
+
 }
