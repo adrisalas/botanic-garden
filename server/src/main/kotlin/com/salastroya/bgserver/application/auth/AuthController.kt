@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.server.ServerWebInputException
 
 @RestController
 @RequestMapping("/api/auth")
@@ -93,6 +94,18 @@ class AuthController(
     suspend fun badRequestHandler(ex: InvalidUseCaseException): ErrorMessage {
         log.warn { ex.message }
         return ErrorMessage(ex.message ?: "")
+    }
+
+    @ExceptionHandler(ServerWebInputException::class)
+    @ResponseStatus(BAD_REQUEST)
+    suspend fun serverWebInputException(ex: ServerWebInputException): ErrorMessage {
+        log.warn { ex.message }
+        ex.cause?.let {
+            log.warn { it.message }
+            return ErrorMessage(it.message ?: ex.message)
+        }
+        log.warn { ex.message }
+        return ErrorMessage(ex.message)
     }
 
     @ExceptionHandler(UnauthorizedException::class)
