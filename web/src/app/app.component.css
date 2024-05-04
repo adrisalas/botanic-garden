@@ -1,0 +1,25 @@
+mat-toolbar {
+    position: relative;
+    z-index: 5;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+mat-toolbar h1 {
+    text-align: center;
+    font-weight: lighter;
+    flex-grow: 1;
+}
+
+mat-toolbar button {
+    flex-shrink: 0;
+}
+
+mat-sidenav-container {
+    height: calc(100vh - 64px);
+}
+
+mat-sidenav,
+mat-sidenav-content {
+    transition: all 500ms ease-in-out;
+}

@@ -1,0 +1,136 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+:root {
+    --color-primary: #018786;
+    --color-primary-light: #01BAB8;
+    --color-primary-extra-light: #03DAC5;
+
+    --color-secondary: #d0f4ea;
+    --color-cards: #B5DAED;
+    --color-green: #71a039;
+    --color-red: #8a2624;
+    --color-orange: #c3690f;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-typography h2 {
+    text-align: center;
+    font-weight: lighter;
+}
+
+fieldset {
+    border-width: 1px;
+    border-color: var(--color-primary-extra-light);
+}
+
+fieldset mat-form-field {
+    width: 100%;
+}
+
+
+/* Common styles */
+.filterInput {
+    width: 100%;
+}
+
+.headerPage {
+    display: flex;
+    margin: 10px;
+}
+
+.headerPage h2 {
+    flex-grow: 1;
+}
+
+.headerPage .buttonContainer {
+    flex-shrink: 0;
+}
+
+.table-container {
+    height: 70vh;
+    overflow: scroll;
+}
+
+.buttonContainer {
+    button {
+        margin: 5px;
+    }
+
+    >.btn-create {
+        background: var(--color-green);
+    }
+
+    >.btn-edit {
+        background: var(--color-orange);
+    }
+
+    >.btn-delete {
+        background: var(--color-red);
+    }
+}
+
+.container-sidenav {
+    height: 91.8vh;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+/*...Table with Expandible Details */
+tr.detail-row {
+    height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.element-row:not(.expanded-row):active {
+    background: #efefef;
+}
+
+.element-row td {
+    border-bottom-width: 0;
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.container-img-detail {
+    box-shadow: 1px 1px 5px lightgrey;
+    border: 1px solid lightgrey;
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+}
+
+.container-detail {
+    display: flex;
+    flex-direction: column;
+
+    >p>b {
+        margin-right: 10px;
+    }
+}
+
+.img-detail {
+    width: 200px;
+    float: left;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--color-primary);
+}

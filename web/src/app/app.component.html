@@ -1,0 +1,28 @@
+<main class="main">
+  <mat-toolbar class="mat-elevation-z3">
+    @if(tokenJWT != ""){
+    <button mat-icon-button (click)="collapsed.set(!collapsed())">
+      <mat-icon>menu</mat-icon>
+    </button>
+    }
+    <h1>
+      Botanical Garden - Admin App
+    </h1>
+  </mat-toolbar>
+
+  @if(tokenJWT != ""){
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" [style.width]="sidenavWidth()" opened>
+      <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()" style="padding: 0%;">
+      <router-outlet />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  }
+  @else{
+  <main class="contentNotLogged">
+    <router-outlet />
+  </main>
+  }
+</main>

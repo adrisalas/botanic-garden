@@ -1,0 +1,18 @@
+.mat-mdc-cell ul {
+    padding: 0;
+    padding-left: 5px;
+}
+
+.floweringForm {
+    display: flex;
+}
+
+.modal-CRUD {
+    padding: 10px;
+    text-align: center;
+    width: 500px;
+}
+
+div.container-img-detail .expandedDetails {
+    padding-left: 20px;
+}

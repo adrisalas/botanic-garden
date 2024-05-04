@@ -1,0 +1,41 @@
+:host * {
+    transition: all 500ms ease-in-out;
+}
+
+.sidenav-header {
+    padding-top: 24px;
+    text-align: center;
+
+    >img {
+        border-radius: 100%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+}
+
+.username {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.hide-header-text {
+    color: transparent;
+    font-size: 9px;
+    height: 0px;
+}
+
+.menuItem {
+    border-left: 5px solid;
+    border-left-color: transparent;
+
+}
+
+mat-nav-list a.selected-menu-item {
+    border-left-color: var(--color-primary);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item {
+    border-radius: 0%;
+}

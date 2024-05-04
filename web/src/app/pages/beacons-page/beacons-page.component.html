@@ -1,0 +1,143 @@
+<mat-sidenav-container class="container-sidenav">
+    <mat-sidenav-content #contentbeacon>
+        <div class="headerPage">
+            <h2>Beacons</h2>
+            <div class="buttonContainer">
+                <button mat-fab extended color="primary" class="btn-create" (click)="showCreate()">
+                    <mat-icon>add</mat-icon>
+                    Create
+                </button>
+                <button mat-fab extended color="primary" class="btn-edit" (click)="showEdit()">
+                    <mat-icon>edit</mat-icon>
+                    Edit
+                </button>
+                <button mat-fab extended color="primary" class="btn-delete" (click)="deleteBeacon()">
+                    <mat-icon>delete</mat-icon>
+                    Delete
+                </button>
+            </div>
+        </div>
+
+        <mat-form-field class="filterInput">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+        </mat-form-field>
+
+        <div class="table-container">
+
+            <table mat-table matSort multiTemplateDataRows [dataSource]="dataSourceBeacons" matSortActive="created"
+                matSortDisableClear matSortDirection="desc">
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+                    <td mat-cell *matCellDef="let beacon">{{beacon.id}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="item">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Item</th>
+                    <td mat-cell *matCellDef="let beacon">
+                        @if(beacon.item){
+                        <ul class="ul-beacon-item">
+                            <li><b>Type:</b> {{beacon.item.type}}</li>
+                            <li><b>Id:</b> {{beacon.item.id}}</li>
+                        </ul>
+                        }
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                        <div class="element-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                            <div class="container-img-detail">
+                                <div class="container-detail">
+                                    <p><b>Beacon id:</b> {{element.id}}</p>
+                                    @if(element.item){
+                                    @if(element.item.type == "PLANT" && associatedItemDetails){
+                                    <ul>
+                                        <p>Associated Plant</p>
+                                        <li><b>Id:</b> {{associatedItemDetails.id}}</li>
+                                        <li><b>Common Name:</b>{{associatedItemDetails.commonName}}</li>
+                                        <li><b>Scientific Name:</b> {{associatedItemDetails.scientificName}}</li>
+                                        <li><b>Type:</b> {{associatedItemDetails.type}}</li>
+                                    </ul>
+                                    }
+                                    @else if(element.item.type == "POI" && associatedItemDetails){
+                                    <ul>
+                                        <p>Associated POI</p>
+                                        <li><b>Id:</b> {{associatedItemDetails.id}}</li>
+                                        <li><b>Name:</b>{{associatedItemDetails.name}}</li>
+                                        <li><b>Description:</b> {{associatedItemDetails.description}}</li>
+                                    </ul>
+                                    }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"
+                    [class.example-expanded-row]="expandedElement === row" (click)="expandRow(row)">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+            </table>
+        </div>
+    </mat-sidenav-content>
+
+    <mat-sidenav #createNav [mode]='"over"' fixedTopGap="56" class="modal-CRUD" [opened]="isOpenCRUDNav"
+        (closed)="isOpenCRUDNav = false;clearSelection();" (opened)="isOpenCRUDNav = true">
+        <h4>{{ titleModal }}</h4>
+        <section class="formContainer">
+            <mat-form-field>
+                <mat-label>Id *</mat-label>
+                <input matInput [(ngModel)]="selectedBeacon.id">
+            </mat-form-field>
+            <fieldset>
+                <legend>Associated Item</legend>
+                <mat-form-field>
+                    <mat-label>Item Type</mat-label>
+                    <mat-select [(ngModel)]="selectedBeacon.item.type" (selectionChange)="loadItemIds()">
+                        <mat-option value="">No item</mat-option>
+                        <mat-option value="PLANT">Plant</mat-option>
+                        <mat-option value="POI">Point of interest</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Item Id</mat-label>
+                    <mat-select [(ngModel)]="selectedBeacon.item.id">
+                        <mat-option value="-1">Select item type</mat-option>
+                        @for(item of selectableItems; track item){
+                        @if(selectedBeacon.item.type == "PLANT"){
+                        <mat-option [value]="item.id">{{item.id}} - {{item.commonName}}</mat-option>
+                        }
+                        @else if(selectedBeacon.item.type == "POI"){
+                        <mat-option [value]="item.id">{{item.id}} - {{item.name}}</mat-option>
+                        }
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </fieldset>
+
+            <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="saveBeacon()">
+                <mat-icon>done</mat-icon>
+                Save
+            </button>
+        </section>
+    </mat-sidenav>
+</mat-sidenav-container>
