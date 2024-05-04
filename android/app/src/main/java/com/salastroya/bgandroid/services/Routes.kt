@@ -6,6 +6,7 @@ object Routes {
     const val plantDetail = "plantDetail"
     const val nearbyPlants = "nearbyPlants"
     const val news = "news"
+    const val newsDetail = "newsDetail"
     const val map = "map"
     const val profile = "profile"
     const val login = "login"

@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -31,7 +32,8 @@ fun LoginField(
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String = stringResource(id = R.string.loginUser),
-    placeholder: String = stringResource(id = R.string.usernamePlaceholder)
+    placeholder: String = stringResource(id = R.string.usernamePlaceholder),
+    isError : Boolean = false
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -39,7 +41,7 @@ fun LoginField(
         Icon(
             Icons.Default.Person,
             contentDescription = "",
-            tint = colorResource(id = R.color.teal_700)
+            tint = if (isError) Color.Red else colorResource(id = R.color.teal_700)
         )
     }
 
@@ -55,7 +57,8 @@ fun LoginField(
         placeholder = { Text(placeholder) },
         label = { Text(label) },
         singleLine = true,
-        visualTransformation = VisualTransformation.None
+        visualTransformation = VisualTransformation.None,
+        isError = isError
     )
 }
 
@@ -66,7 +69,9 @@ fun PasswordField(
     submit: () -> Unit,
     modifier: Modifier = Modifier,
     label: String = stringResource(id = R.string.passwordUser),
-    placeholder: String = stringResource(id = R.string.passwordPlaceholder)
+    placeholder: String = stringResource(id = R.string.passwordPlaceholder),
+    isError: Boolean = false,
+    supportingText : String? = null
 ) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -75,7 +80,7 @@ fun PasswordField(
         Icon(
             painter = painterResource(id = R.drawable.key),
             contentDescription = "",
-            tint = colorResource(id = R.color.teal_700)
+            tint = if (isError) Color.Red else colorResource(id = R.color.teal_700)
         )
     }
     val trailingIcon = @Composable {
@@ -85,7 +90,7 @@ fun PasswordField(
                     id = R.drawable.lock
                 ),
                 contentDescription = "",
-                tint = colorResource(id = R.color.teal_700)
+                tint = if (isError) Color.Red else colorResource(id = R.color.teal_700)
             )
         }
     }
@@ -107,6 +112,12 @@ fun PasswordField(
         placeholder = { Text(placeholder) },
         label = { Text(label) },
         singleLine = true,
+        isError = isError,
+        supportingText = {
+            if(isError && !supportingText.isNullOrEmpty()){
+                Text(text = supportingText, color = Color.Red)
+            }
+        },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
     )
 }

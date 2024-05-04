@@ -9,5 +9,4 @@ object MainStore {
     val searchText = mutableStateOf("")
 
     val activeSearch = mutableStateOf(true)
-
 }

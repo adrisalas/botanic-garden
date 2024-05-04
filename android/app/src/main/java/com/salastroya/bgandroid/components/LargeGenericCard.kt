@@ -1,6 +1,7 @@
 package com.salastroya.bgandroid.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,37 +21,71 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.salastroya.bgandroid.R
-import com.salastroya.bgandroid.controller.returnPainterImg
-import com.salastroya.bgandroid.model.Plant
-import com.salastroya.bgandroid.services.Routes
+import com.salastroya.bgandroid.ui.theme.fontNanum
 
 @Composable
-fun LargeCard(
-    plant: Plant,
-    navController: NavController
+fun LargeGenericCard(
+    title: String,
+    subtitle: String,
+    date: String? = null,
+    image: Painter? = null,
+    navController: NavController,
+    route: String,
+    cardColor: Color = Color(0xFFDAE1E7)
 ) {
-    val context = LocalContext.current
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = Color(0xFFDAE1E7),
+        color = cardColor,
         modifier = Modifier
             .height(210.dp)
             .padding(10.dp),
         shadowElevation = 10.dp
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (image != null) {
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 150.dp)
+                        .padding(5.dp)
+                ) {
+                    Image(
+                        painter = image,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = null,
+                        modifier = Modifier.background(cardColor)
+                    )
+                    if (date != null) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = date,
+                                textAlign = TextAlign.Center,
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier.padding(20.dp),
+                                fontFamily = fontNanum
+                            )
+                        }
+                    }
+                }
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -62,7 +95,7 @@ fun LargeCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = plant.commonName,
+                    text = title,
                     fontSize = 27.sp,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Light
@@ -70,32 +103,9 @@ fun LargeCard(
 
                 Spacer(modifier = Modifier.height(2.dp))
 
-                if (plant.type != null) {
-                    Text(text = plant.type)
-                }
+                Text(text = subtitle)
 
                 Spacer(modifier = Modifier.height(2.dp))
-
-                if (plant.details != null && plant.details.isBlooming()) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Blooming ",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.blooming),
-                            tint = colorResource(id = R.color.teal_700),
-                            contentDescription = null
-                        )
-                    }
-                } else {
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
 
                 ElevatedButton(
                     shape = RoundedCornerShape(8.dp),
@@ -107,7 +117,7 @@ fun LargeCard(
                         .fillMaxWidth()
                         .padding(10.dp, 0.dp),
                     onClick = {
-                        navController.navigate(Routes.plantDetail + "/" + plant.id)
+                        navController.navigate(route)
                     }
                 ) {
                     Text(
@@ -117,17 +127,6 @@ fun LargeCard(
                         style = MaterialTheme.typography.titleLarge
                     )
                 }
-            }
-
-            Surface(
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.size(width = 120.dp, height = 200.dp)
-            ) {
-                Image(
-                    painter = returnPainterImg(plant.image, context = context),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null
-                )
             }
         }
     }

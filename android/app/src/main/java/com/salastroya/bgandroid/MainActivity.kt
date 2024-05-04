@@ -21,8 +21,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.salastroya.bgandroid.pages.HomePage
 import com.salastroya.bgandroid.pages.NearbyPlantsPage
+import com.salastroya.bgandroid.pages.NewsDetailPage
+import com.salastroya.bgandroid.pages.NewsPage
 import com.salastroya.bgandroid.pages.Page404
 import com.salastroya.bgandroid.pages.PlantDetailPage
+import com.salastroya.bgandroid.pages.ProfilePage
 import com.salastroya.bgandroid.pages.SearchPage
 import com.salastroya.bgandroid.pages.contentLogin
 import com.salastroya.bgandroid.pages.contentSignUp
@@ -94,19 +97,23 @@ private fun MainScreenNavigationConfigurations(
             NearbyPlantsPage(navController)
         }
         composable(route = Routes.news) {
-            Page404()
+            NewsPage(navController)
         }
         composable(route = Routes.map) {
             Page404()
         }
         composable(route = Routes.profile) {
-            Page404()
+            ProfilePage(navController = navController)
         }
         composable(route = Routes.login) {
             contentLogin(navController = navController)
         }
-        composable(route = Routes.signUp ){
+        composable(route = Routes.signUp) {
             contentSignUp(navController = navController)
+        }
+        composable(route = Routes.newsDetail + "/{newsId}") {
+            val newsId = it.arguments?.getString("newsId")?.toIntOrNull() ?: 0
+            NewsDetailPage(newsId = newsId, navController = navController)
         }
     }
 }

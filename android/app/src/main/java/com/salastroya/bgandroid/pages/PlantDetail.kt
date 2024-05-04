@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.R
+import com.salastroya.bgandroid.controller.returnPainterImg
 import com.salastroya.bgandroid.model.GardenIcon
 import com.salastroya.bgandroid.model.Plant
 import com.salastroya.bgandroid.services.PlantService
@@ -61,18 +62,12 @@ fun PlantInfo(plant: Plant?) {
         ) {
 
             item {
-                val imageResourceId = remember(plant.image) {
-                    context.resources.getIdentifier(
-                        plant.image,
-                        "drawable",
-                        context.packageName
-                    )
-                }
-
                 Image(
-                    painter = painterResource(id = imageResourceId),
+                    painter = returnPainterImg(image = plant.image, context = context),
                     contentDescription = "",
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
                     contentScale = ContentScale.FillWidth
                 )
             }
@@ -116,10 +111,13 @@ fun PlantInfo(plant: Plant?) {
                     plantDetails?.getIconDetail(stringResource(id = R.string.waterIcon)),
                     plantDetails?.water
                 )
-                PlantDetail(
-                    plantDetails?.getIconDetail(stringResource(id = R.string.floweringIcon)),
-                    "Flowering months: $firstMonth/$lastMonth"
-                )
+
+                if (!firstMonth.isNullOrEmpty() && !lastMonth.isNullOrEmpty()) {
+                    PlantDetail(
+                        plantDetails?.getIconDetail(stringResource(id = R.string.floweringIcon)),
+                        "Flowering months: $firstMonth/$lastMonth"
+                    )
+                }
             }
 
             if (plant.description != null) {
@@ -145,9 +143,10 @@ fun PlantInfo(plant: Plant?) {
 
 @Composable
 fun PlantDetail(iconInfo: GardenIcon?, text: String?) {
-    if (text == null || iconInfo == null) {
+    if (text.isNullOrEmpty() || iconInfo == null) {
         return
     }
+
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,

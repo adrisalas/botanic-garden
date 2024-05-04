@@ -43,4 +43,15 @@
     <string name="submitButton">Submit </string>
     <string name="textToSignUp">Don\'t have an account yet? Sign up here</string>
 
+    <!-- ...News... -->
+    <string name="titleNews">Garden News</string>
+
+    <!--...Profile...-->
+    <string name="titleProfile">Profile</string>
+    <string name="btnChangePassword">Change Password</string>
+    <string name="btnLogout">Logout</string>
+
+
+    <string name="msgNeedLogin">You need to login to view this page</string>
+
 </resources>
