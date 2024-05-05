@@ -46,6 +46,13 @@ class UserRouteController(
     ): Route {
         val username = authHelper.extractUsername(authorizationHeader)
 
+        if (items.size < 2) {
+            throw ResponseStatusException(
+                BAD_REQUEST,
+                "Select at least 2 items to generate a route. The first item will be the beginning of the route"
+            )
+        }
+
         try {
             return useCases.requestRoute(RequestRouteCommand(username, items))
         } catch (ex: TimeoutCancellationException) {

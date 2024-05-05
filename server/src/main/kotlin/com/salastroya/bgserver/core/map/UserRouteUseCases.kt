@@ -46,7 +46,7 @@ class UserRouteUseCases(
             .distinctBy { it.id }
 
         val startPoint = points
-            .find { point -> point.items.any { item -> itemsToVisit.contains(item) } }
+            .find { point -> point.items.any { item -> itemsToVisit[0] == item } }
             ?: throw RuntimeException("Requested items are not reachable.")
 
         return withTimeout(THIRTY_SECONDS_IN_MS) {
