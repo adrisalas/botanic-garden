@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.coroutines.coroutineContext
 
-private const val TEN_SECONDS_IN_MS = 10_000L
+private const val THIRTY_SECONDS_IN_MS = 30_000L
 
 @Service
 class UserRouteUseCases(
@@ -49,7 +49,7 @@ class UserRouteUseCases(
             .find { point -> point.items.any { item -> itemsToVisit.contains(item) } }
             ?: throw RuntimeException("Requested items are not reachable.")
 
-        return withTimeout(TEN_SECONDS_IN_MS) {
+        return withTimeout(THIRTY_SECONDS_IN_MS) {
             findShortestRoute(
                 startPoint,
                 points,
@@ -68,49 +68,79 @@ class UserRouteUseCases(
      */
     private suspend fun findShortestRoute(
         startNode: Point,
-        nodes: List<Point>,
-        edges: List<Path>,
+        points: List<Point>,
+        paths: List<Path>,
         itemsToVisit: List<Item>
     ): List<Point> {
-        val idToNode = nodes.associateBy { it.id!! }
-        val adjacentNodes = generateAdjacentMap(edges)
+        val idToPoint = points.associateBy { it.id!! }
+        val adjacentPoints = generateAdjacentMap(paths)
 
-        val nextRoutesToSearch = mutableListOf(listOf(startNode) to 0.0)
+        val nextRoutesToSearch = mutableListOf(
+            RouteToExplore(listOf(startNode), itemsToVisit, 0.0)
+        )
 
         while (coroutineContext.isActive) {
             delay(1) // Let other coroutines run
-            nextRoutesToSearch.sortBy { it.second }
+            nextRoutesToSearch.sortBy { it.meters }
             val currentRoute = nextRoutesToSearch.removeFirst()
 
-            if (currentRoute.first.hasAllItems(itemsToVisit)) {
-                return currentRoute.first
+            val lastPoint = currentRoute.route.last()
+
+            val itemsNotFound = currentRoute.itemsNotFound.filterNot { lastPoint.items.contains(it) }
+            if (itemsNotFound.isEmpty()) {
+                return currentRoute.route
             }
 
-            val lastPoint = currentRoute.first.last()
+            val secondToLastPointId = when (currentRoute.route.size) {
+                0, 1 -> null
+                else -> currentRoute.route[currentRoute.route.size - 2].id
+            }
 
-            adjacentNodes[lastPoint.id]?.forEach {
-                val newRoute = currentRoute.first + idToNode[it.first]!!
-                val cost = currentRoute.second + it.second
-                nextRoutesToSearch.add(newRoute to cost)
+            adjacentPoints[lastPoint.id]?.forEach {
+                val (id, meters) = it
+                val wasItemFound = itemsNotFound.size != currentRoute.itemsNotFound.size
+                val isNotTurningBack = id != secondToLastPointId
+
+                if (wasItemFound || isNotTurningBack) {
+                    nextRoutesToSearch.add(
+                        RouteToExplore(
+                            route = currentRoute.route + idToPoint[id]!!,
+                            itemsNotFound = itemsNotFound,
+                            meters = currentRoute.meters + meters
+                        )
+                    )
+                }
             }
 
         }
         return emptyList()
     }
 
-    private suspend fun generateAdjacentMap(paths: List<Path>): Map<Int, List<Pair<Int, Double>>> {
-        val adjacent = mutableMapOf<Int, MutableList<Pair<Int, Double>>>()
+    private data class PointIdWithCost(val id: Int, val meters: Double)
+
+    private data class RouteToExplore(
+        val route: List<Point>,
+        val itemsNotFound: List<Item>,
+        val meters: Double
+    )
+
+    private suspend fun generateAdjacentMap(paths: List<Path>): Map<Int, List<PointIdWithCost>> {
+        val adjacent = mutableMapOf<Int, MutableList<PointIdWithCost>>()
 
         paths.forEach { path ->
-            val p1 = path.pointA.id!!
-            val p2 = path.pointB.id!!
-            adjacent.getOrPut(p1) {
+            val id1 = path.pointA.id!!
+            val id2 = path.pointB.id!!
+            adjacent.getOrPut(id1) {
                 mutableListOf()
-            }.add(p2 to path.meters)
+            }.add(
+                PointIdWithCost(id2, path.meters)
+            )
 
-            adjacent.getOrPut(p2) {
+            adjacent.getOrPut(id2) {
                 mutableListOf()
-            }.add(p1 to path.meters)
+            }.add(
+                PointIdWithCost(id1, path.meters)
+            )
         }
         return adjacent
     }
