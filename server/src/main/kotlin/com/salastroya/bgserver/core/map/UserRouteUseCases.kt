@@ -40,7 +40,7 @@ class UserRouteUseCases(
     }
 
     @Throws(TimeoutCancellationException::class)
-    suspend fun generateBestRouteWith(itemsToVisit: List<Item>): List<Point> {
+    private suspend fun generateBestRouteWith(itemsToVisit: List<Item>): List<Point> {
         val paths = pathUseCases.findAll().toList()
         val points = paths.flatMap { sequenceOf(it.pointA, it.pointB) }
             .distinctBy { it.id }
@@ -115,16 +115,16 @@ class UserRouteUseCases(
         return adjacent
     }
 
-}
+    private fun List<Point>.hasAllItems(itemsToVisit: List<Item>): Boolean {
+        val wasItemVisited = itemsToVisit.associateWith { false }.toMutableMap()
 
-private fun List<Point>.hasAllItems(itemsToVisit: List<Item>): Boolean {
-    val wasItemVisited = itemsToVisit.associateWith { false }.toMutableMap()
-
-    this.forEach { point ->
-        point.items.forEach { item ->
-            wasItemVisited.computeIfPresent(item) { _, _ -> true }
+        this.forEach { point ->
+            point.items.forEach { item ->
+                wasItemVisited.computeIfPresent(item) { _, _ -> true }
+            }
         }
+
+        return wasItemVisited.values.all { it }
     }
 
-    return wasItemVisited.values.all { it }
 }
