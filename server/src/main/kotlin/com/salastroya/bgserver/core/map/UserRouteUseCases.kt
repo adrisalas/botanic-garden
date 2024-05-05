@@ -96,17 +96,23 @@ class UserRouteUseCases(
                 else -> currentRoute.route[currentRoute.route.size - 2].id
             }
 
-            adjacentPoints[lastPoint.id]?.forEach {
-                val (id, meters) = it
-                val wasItemFound = itemsNotFound.size != currentRoute.itemsNotFound.size
-                val isNotTurningBack = id != secondToLastPointId
+            adjacentPoints[lastPoint.id]?.forEach { pointIdWithCost ->
+                val nextPoint = idToPoint[pointIdWithCost.id]!!
+                val cost = pointIdWithCost.meters
 
-                if (wasItemFound || isNotTurningBack) {
+                val timesNextPointWasCrossed = currentRoute.route.count { it.id == nextPoint.id }
+                val degree = adjacentPoints[nextPoint.id]!!.size
+                val degreeWasNotExceeded = timesNextPointWasCrossed < degree
+
+                val wasItemFound = itemsNotFound.size != currentRoute.itemsNotFound.size
+                val isTurningBack = nextPoint.id != secondToLastPointId
+
+                if ((wasItemFound || isTurningBack) && degreeWasNotExceeded) {
                     nextRoutesToSearch.add(
                         RouteToExplore(
-                            route = currentRoute.route + idToPoint[id]!!,
+                            route = currentRoute.route + nextPoint,
                             itemsNotFound = itemsNotFound,
-                            meters = currentRoute.meters + meters
+                            meters = currentRoute.meters + cost
                         )
                     )
                 }
