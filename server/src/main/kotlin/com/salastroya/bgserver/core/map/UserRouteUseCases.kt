@@ -105,9 +105,9 @@ class UserRouteUseCases(
                 val degreeWasNotExceeded = timesNextPointWasCrossed < degree
 
                 val wasItemFound = itemsNotFound.size != currentRoute.itemsNotFound.size
-                val isTurningBack = nextPoint.id != secondToLastPointId
+                val isNotTurningBack = nextPoint.id != secondToLastPointId
 
-                if ((wasItemFound || isTurningBack) && degreeWasNotExceeded) {
+                if ((wasItemFound || isNotTurningBack) && degreeWasNotExceeded) {
                     nextRoutesToSearch.add(
                         RouteToExplore(
                             route = currentRoute.route + nextPoint,
