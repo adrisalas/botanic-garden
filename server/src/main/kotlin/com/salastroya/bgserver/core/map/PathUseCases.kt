@@ -75,7 +75,8 @@ class PathUseCases(
 
     @EventListener(PointDeletedEvent::class)
     fun handleEvent(event: PointDeletedEvent) = runBlocking {
-        // TODO Bug here, if the point was deleted the Repository may not find the Point
+        // Notice Spring Boot Events are SYNCHRONOUS
+        // This code will yield an error if it was ASYNCHRONOUS
         repository.findAllContainingPointId(event.id)
             .toList()
             .forEach { delete(it.pointA.id!!, it.pointB.id!!) }

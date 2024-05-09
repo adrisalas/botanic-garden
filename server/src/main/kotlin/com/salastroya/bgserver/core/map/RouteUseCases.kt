@@ -46,6 +46,10 @@ class RouteUseCases(
     @Transactional
     @Throws(InvalidUseCaseException::class)
     suspend fun insertUsersRoute(route: Route): Route {
+        if (route.id != null) {
+            throw InvalidUseCaseException("Cannot provide id for user-route")
+        }
+
         return repository.insert(route)
     }
 

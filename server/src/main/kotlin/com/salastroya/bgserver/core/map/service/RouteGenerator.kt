@@ -25,7 +25,7 @@ class RouteGenerator(private val pathUseCases: PathUseCases) {
 
         val startPoint = points
             .find { point -> point.items.any { item -> itemsToVisit[0] == item } }
-            ?: throw RuntimeException("Requested items are not reachable.")
+            ?: throw NoSuchElementException("Requested items are not reachable.")
 
         return withTimeout(THIRTY_SECONDS_IN_MS) {
             findShortestRoute(startPoint, points, paths, itemsToVisit)
