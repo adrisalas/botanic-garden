@@ -10,4 +10,5 @@ interface RouteRepository {
     suspend fun insert(route: Route): Route
     suspend fun update(route: Route): Route
     suspend fun delete(id: Int)
+    suspend fun deleteByPointId(id: Int)
 }

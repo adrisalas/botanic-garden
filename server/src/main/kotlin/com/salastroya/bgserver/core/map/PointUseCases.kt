@@ -1,13 +1,21 @@
 package com.salastroya.bgserver.core.map
 
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
+import com.salastroya.bgserver.core.map.event.PointDeletedEvent
+import com.salastroya.bgserver.core.map.event.PointUpdatedEvent
 import com.salastroya.bgserver.core.map.model.Item
 import com.salastroya.bgserver.core.map.model.ItemType
 import com.salastroya.bgserver.core.map.model.Point
 import com.salastroya.bgserver.core.map.repository.PointRepository
 import com.salastroya.bgserver.core.plant.PlantUseCases
+import com.salastroya.bgserver.core.plant.event.PlantDeletedEvent
 import com.salastroya.bgserver.core.poi.PoiUseCases
+import com.salastroya.bgserver.core.poi.event.PoiDeletedEvent
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.runBlocking
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional
 class PointUseCases(
     private val repository: PointRepository,
     private val plantUseCases: PlantUseCases,
-    private val poiUseCases: PoiUseCases
+    private val poiUseCases: PoiUseCases,
+    private val publisher: ApplicationEventPublisher
 ) {
 
     fun findAll(): Flow<Point> {
@@ -66,12 +75,42 @@ class PointUseCases(
             throw InvalidUseCaseException("Point with id ${point.id} does not exist")
         }
         point.items.forEach { checkItemIsValid(it) }
-        
+
         return repository.update(point)
+            .also { publisher.publishEvent(PointUpdatedEvent(this, point.id)) }
     }
 
     @Transactional
     suspend fun delete(id: Int) {
         repository.delete(id)
+            .also { publisher.publishEvent(PointDeletedEvent(this, id)) }
+    }
+
+    @EventListener(PlantDeletedEvent::class)
+    fun handleEvent(event: PlantDeletedEvent) = runBlocking {
+        val plantDeleted = Item(ItemType.PLANT, event.id)
+
+        findAll()
+            .filter { it.items.contains(plantDeleted) }
+            .collect { point ->
+                val itemsWithoutPlantDeleted = point.items.filter { it != plantDeleted }
+                repository.update(
+                    point.copy(items = itemsWithoutPlantDeleted)
+                )
+            }
+    }
+
+    @EventListener(PoiDeletedEvent::class)
+    fun handleEvent(event: PoiDeletedEvent) = runBlocking {
+        val poiDeleted = Item(ItemType.POI, event.id)
+
+        findAll()
+            .filter { it.items.contains(poiDeleted) }
+            .collect { point ->
+                val itemsWithoutPlantDeleted = point.items.filter { it != poiDeleted }
+                repository.update(
+                    point.copy(items = itemsWithoutPlantDeleted)
+                )
+            }
     }
 }

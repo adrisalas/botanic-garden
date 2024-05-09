@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface RoutePointR2dbcRepository : CoroutineCrudRepository<RoutePointDto, Int> {
     fun findByRouteIdOrderByPosition(routeId: Int): Flow<RoutePointDto>
+    fun findByPointId(pointId: Int): Flow<RoutePointDto>
     suspend fun insert(routePoint: RoutePointDto): RoutePointDto
     suspend fun deleteByRouteId(routeId: Int)
 }

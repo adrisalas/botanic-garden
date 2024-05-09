@@ -37,6 +37,10 @@ class PathDataService(
         return repository.insert(path.toDto()).toModel()
     }
 
+    override suspend fun update(path: Path): Path {
+        return repository.update(path.toDto()).toModel()
+    }
+
     suspend fun Path.toDto(): PathDto {
         return PathDto(
             pointAId = this.pointA.id

@@ -1,14 +1,19 @@
 package com.salastroya.bgserver.core.plant
 
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
+import com.salastroya.bgserver.core.plant.event.PlantDeletedEvent
 import com.salastroya.bgserver.core.plant.model.Plant
 import com.salastroya.bgserver.core.plant.repository.PlantRepository
 import kotlinx.coroutines.flow.Flow
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class PlantUseCases(private val repository: PlantRepository) {
+class PlantUseCases(
+    private val repository: PlantRepository,
+    private val publisher: ApplicationEventPublisher
+) {
 
     fun findAll(): Flow<Plant> {
         return repository.findAll()
@@ -46,5 +51,6 @@ class PlantUseCases(private val repository: PlantRepository) {
     @Transactional
     suspend fun delete(id: Int) {
         repository.delete(id)
+            .also { publisher.publishEvent(PlantDeletedEvent(this, id)) }
     }
 }

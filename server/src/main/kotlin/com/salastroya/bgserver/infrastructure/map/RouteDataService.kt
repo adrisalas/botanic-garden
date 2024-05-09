@@ -106,4 +106,12 @@ class RouteDataService(
         routePointRepository.deleteByRouteId(id)
         routeRepository.deleteById(id)
     }
+
+    override suspend fun deleteByPointId(id: Int) {
+        routePointRepository.findByPointId(id)
+            .map { it.routeId }
+            .toList()
+            .distinct()
+            .forEach { delete(it) }
+    }
 }
