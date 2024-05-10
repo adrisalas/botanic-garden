@@ -79,7 +79,6 @@ class BeaconController(
     @ExceptionHandler(ServerWebInputException::class)
     @ResponseStatus(BAD_REQUEST)
     suspend fun serverWebInputException(ex: ServerWebInputException): ErrorMessage {
-        log.warn { ex.message }
         ex.cause?.let {
             log.warn { it.message }
             return ErrorMessage(it.message ?: ex.message)

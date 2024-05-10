@@ -13,5 +13,6 @@ interface PathR2dbcRepository : CoroutineCrudRepository<PathDto, Int> {
     @Query("select * from map_path p WHERE p.point_a_id = :pointId OR p.point_b_id = :pointId")
     fun findAllByPointId(pointId: Int): Flow<PathDto>
     suspend fun insert(path: PathDto): PathDto
+    suspend fun update(toDto: PathDto): PathDto
     suspend fun deleteByPointAIdAndPointBId(pointAId: Int, pointBId: Int)
 }

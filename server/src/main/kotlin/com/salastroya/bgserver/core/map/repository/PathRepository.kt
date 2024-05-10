@@ -7,5 +7,6 @@ interface PathRepository {
     fun findAll(): Flow<Path>
     fun findAllContainingPointId(pointId: Int): Flow<Path>
     suspend fun insert(path: Path): Path
+    suspend fun update(path: Path): Path
     suspend fun delete(pointAId: Int, pointBId: Int)
 }

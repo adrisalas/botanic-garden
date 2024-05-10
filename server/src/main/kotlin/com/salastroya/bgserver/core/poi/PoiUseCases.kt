@@ -1,15 +1,18 @@
 package com.salastroya.bgserver.core.poi
 
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
+import com.salastroya.bgserver.core.poi.event.PoiDeletedEvent
 import com.salastroya.bgserver.core.poi.model.Poi
 import com.salastroya.bgserver.core.poi.port.PoiRepository
 import kotlinx.coroutines.flow.Flow
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PoiUseCases(
     private val repository: PoiRepository,
+    private val publisher: ApplicationEventPublisher
 ) {
 
     fun findAll(): Flow<Poi> {
@@ -50,5 +53,6 @@ class PoiUseCases(
     @Transactional
     suspend fun delete(id: Int) {
         repository.delete(id)
+            .also { publisher.publishEvent(PoiDeletedEvent(this, id)) }
     }
 }

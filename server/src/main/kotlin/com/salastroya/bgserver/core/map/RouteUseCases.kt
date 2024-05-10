@@ -2,10 +2,13 @@ package com.salastroya.bgserver.core.map
 
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
 import com.salastroya.bgserver.core.map.command.CreateRouteCommand
+import com.salastroya.bgserver.core.map.event.PathDeletedEvent
 import com.salastroya.bgserver.core.map.model.Route
 import com.salastroya.bgserver.core.map.repository.RouteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -43,6 +46,10 @@ class RouteUseCases(
     @Transactional
     @Throws(InvalidUseCaseException::class)
     suspend fun insertUsersRoute(route: Route): Route {
+        if (route.id != null) {
+            throw InvalidUseCaseException("Cannot provide id for user-route")
+        }
+
         return repository.insert(route)
     }
 
@@ -81,5 +88,11 @@ class RouteUseCases(
     @Transactional
     suspend fun delete(id: Int) {
         repository.delete(id)
+    }
+
+    @EventListener(PathDeletedEvent::class)
+    fun handleEvent(event: PathDeletedEvent) = runBlocking {
+        repository.deleteByPointId(event.pointAId)
+        repository.deleteByPointId(event.pointBId)
     }
 }

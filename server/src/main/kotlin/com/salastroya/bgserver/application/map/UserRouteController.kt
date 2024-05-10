@@ -6,6 +6,7 @@ import com.salastroya.bgserver.application.ErrorMessage
 import com.salastroya.bgserver.core.common.exception.InvalidUseCaseException
 import com.salastroya.bgserver.core.map.UserRouteUseCases
 import com.salastroya.bgserver.core.map.command.RequestRouteCommand
+import com.salastroya.bgserver.core.map.model.Item
 import com.salastroya.bgserver.core.map.model.Route
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.TimeoutCancellationException
@@ -40,13 +41,20 @@ class UserRouteController(
     @PostMapping
     @ResponseStatus(CREATED)
     suspend fun requestRoute(
-        @RequestBody command: RequestRouteCommand,
+        @RequestBody items: List<Item>,
         @RequestHeader("Authorization") authorizationHeader: String
     ): Route {
-        authHelper.shouldBeTheUser(authorizationHeader, command.username)
+        val username = authHelper.extractUsername(authorizationHeader)
+
+        if (items.size < 2) {
+            throw ResponseStatusException(
+                BAD_REQUEST,
+                "Select at least 2 items to generate a route. The first item will be the beginning of the route"
+            )
+        }
 
         try {
-            return useCases.requestRoute(command)
+            return useCases.requestRoute(RequestRouteCommand(username, items))
         } catch (ex: TimeoutCancellationException) {
             throw ResponseStatusException(
                 INTERNAL_SERVER_ERROR,
@@ -66,7 +74,6 @@ class UserRouteController(
     @ExceptionHandler(ServerWebInputException::class)
     @ResponseStatus(BAD_REQUEST)
     suspend fun serverWebInputException(ex: ServerWebInputException): ErrorMessage {
-        log.warn { ex.message }
         ex.cause?.let {
             log.warn { it.message }
             return ErrorMessage(it.message ?: ex.message)
