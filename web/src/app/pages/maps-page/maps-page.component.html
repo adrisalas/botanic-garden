@@ -1,1 +1,39 @@
-<h1>Maps</h1>
+<div class="headerPage">
+    <h2>Maps</h2>
+</div>
+
+<main class="main-map-page">
+    <div class="container-map">
+        <div id="map">
+        </div>
+        <div class="buttonContainer" style="padding-top: 10px;">
+            <button mat-fab extended color="primary" class="btn-point" (click)="openFormPoint()">
+                <mat-icon>add</mat-icon>
+                Point
+            </button>
+            <button mat-fab extended color="primary" class="btn-path" (click)="openFormPath()">
+                <mat-icon>timeline</mat-icon>
+                Path
+            </button>
+            <button mat-fab extended color="primary" class="btn-route" (click)="openFormRoute()">
+                <mat-icon>gesture</mat-icon>
+                Route
+            </button>
+        </div>
+    </div>
+    <aside>
+        @if(pointFormIsOpened){
+        <app-form-point [observablePoint]="observableCurrentPoint" (openFormPoint)="setPointFormIsOpened($event)"
+            (clearParentPoint)="clearSelectedPoint()" (refreshPoints)="loadAllPoints()"></app-form-point>
+        }
+
+        @if(pathFormIsOpened){
+        <app-form-path (openFormPath)="setPathFormIsOpened($event)" (refreshMap)="loadAllPoints()"></app-form-path>
+        }
+
+        @if(routeFormIsOpened){
+        <app-form-route (openFormRoute)="setRouteFormIsOpened($event)" (loadRouteInMap)="loadRoute($event)"
+            (cleanMarkers)="cleanMarkersRoute()"></app-form-route>
+        }
+    </aside>
+</main>

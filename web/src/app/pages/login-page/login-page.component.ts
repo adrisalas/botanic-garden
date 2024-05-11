@@ -39,7 +39,6 @@ export class LoginPageComponent {
         next: result => {
           let resultUser = this.authService.decodeTokenToUser(result.token);
           if (resultUser && resultUser.isAdmin) {
-            alert("Login was correct.");
             this.router.navigate(['/plants']);
             this.generalData.changeActiveToken(result.token);
             this.generalData.setUserName(resultUser.username);

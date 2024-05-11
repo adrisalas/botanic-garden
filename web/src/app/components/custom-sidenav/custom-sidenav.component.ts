@@ -50,6 +50,16 @@ export class CustomSidenavComponent {
       icon: "map",
       label: "Map",
       route: "map"
+    },
+    {
+      icon: "videogame_asset",
+      label: "Gamification",
+      route: "gamification"
+    },
+    {
+      icon: "assessment",
+      label: "Stats",
+      route: "stats"
     }
   ]);
 

@@ -1,0 +1,53 @@
+<section class="formContainer">
+    <header>
+        <h4>Create / Delete Path</h4>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="closeMenu()">
+            <mat-icon>close</mat-icon>
+            Close
+        </button>
+    </header>
+
+    <fieldset>
+        <legend>Create Path</legend>
+        <section>
+            <mat-form-field>
+                <mat-label>First Point *</mat-label>
+                <mat-select [(ngModel)]="path.pointA" (selectionChange)="onChangePointA()">
+                    @for (point of pointsA; track point) {
+                    <mat-option [value]="point">{{point.id}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Last Point *</mat-label>
+                <mat-select [(ngModel)]="path.pointB" (selectionChange)="onChangePointB()">
+                    @for (point of pointsB; track point) {
+                    <mat-option [value]="point">{{point.id}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </section>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="createPath()">
+            <mat-icon>done</mat-icon>
+            Create Path
+        </button>
+    </fieldset>
+
+    <fieldset style="margin-top: 20px;">
+        <legend>Delete Path</legend>
+        <section>
+            <mat-form-field>
+                <mat-label>Select path: </mat-label>
+                <mat-select [(ngModel)]="pathDelete">
+                    @for (path of allPaths; track path) {
+                    <mat-option [value]="path">{{path.pointA.id}} - to - {{path.pointB.id}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </section>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="deletePath()">
+            <mat-icon>delete</mat-icon>
+            Delete Path
+        </button>
+    </fieldset>
+</section>

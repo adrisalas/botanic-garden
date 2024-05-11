@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { GeneralStoreService } from '../../services/general-store.service';
 import { Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { isImageUrl } from '../../model/image-controller';
+import { isImageUrl } from '../../controllers/image-controller';
 
 
 @Component({

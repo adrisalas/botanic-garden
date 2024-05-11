@@ -1,0 +1,15 @@
+header {
+    >button:nth-child(2) {
+        background: var(--color-primary-light);
+    }
+
+    >button:nth-child(4) {
+        box-shadow: none;
+        background: rgb(194, 31, 31);
+    }
+}
+
+#buttonDeleteRoute {
+    background: darkred;
+    width: 50%;
+}

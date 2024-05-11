@@ -5,6 +5,8 @@ import { MapsPageComponent } from './pages/maps-page/maps-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { PoiPageComponent } from './pages/poi-page/poi-page.component';
 import { BeaconsPageComponent } from './pages/beacons-page/beacons-page.component';
+import { StatsPageComponent } from './pages/stats-page/stats-page.component';
+import { GamificationPageComponent } from './pages/gamification-page/gamification-page.component';
 
 export const routes: Routes = [
     {
@@ -35,5 +37,13 @@ export const routes: Routes = [
     {
         path: 'beacons',
         component: BeaconsPageComponent
+    },
+    {
+        path: 'stats',
+        component: StatsPageComponent
+    },
+    {
+        path: 'gamification',
+        component: GamificationPageComponent
     }
 ];
