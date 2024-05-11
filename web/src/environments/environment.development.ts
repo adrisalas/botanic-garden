@@ -5,5 +5,8 @@ export const environment = {
     urlLogin: `/api/auth/login`,
     urlNews: `/api/news`,
     urlPOIs: `/api/poi`,
-    urlBeacons: `/api/beacons`
+    urlBeacons: `/api/beacons`,
+    urlMapPoints: `api/map/points`,
+    urlMapPaths: `api/map/paths`,
+    urlMapRoutes: `/api/map/routes`
 };

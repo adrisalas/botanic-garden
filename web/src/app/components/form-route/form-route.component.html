@@ -1,0 +1,73 @@
+<section class="formContainer">
+    <header>
+        <h4>Routes</h4>
+        <button mat-fab color="primary" aria-label="Click to add Route" (click)="showCreate()">
+            <mat-icon>add</mat-icon>
+        </button>
+        <button mat-fab color="primary" aria-label="Clic to search Route" (click)="showEdit()">
+            <mat-icon>search</mat-icon>
+        </button>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="closeMenu()">
+            <mat-icon>close</mat-icon>
+            Close
+        </button>
+    </header>
+
+    @if(isCreate){
+    <fieldset style="margin-top: 15px;">
+        <legend>Create Route</legend>
+        <mat-form-field>
+            <mat-label>Name *</mat-label>
+            <input matInput [(ngModel)]="route.name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Route Points</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Points selection">
+                @for (point of selectedPoints; track point) {
+                <mat-chip-row (removed)="removePoint(point)">
+                    Point {{point.id}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + point.id">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input placeholder="Add Point..." #pointInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                (input)="filterPoints($event)" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedPoint($event)">
+                @for (point of filteredPoints; track point) {
+                <mat-option [value]="point.id+''">{{point.id}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        <footer>
+            <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="createRoute()">
+                <mat-icon>check</mat-icon>
+                Create
+            </button>
+        </footer>
+    </fieldset>
+    }
+    @else{
+    <fieldset style="margin-top: 15px;">
+        <legend>Search/Delete Route</legend>
+        <mat-form-field>
+            <mat-label>Select route:</mat-label>
+            <mat-select [(ngModel)]="route" (selectionChange)="showRouteInMap()">
+                @for (route of allRoutes; track route) {
+                <mat-option [value]="route">{{route.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <footer>
+            <button id="buttonDeleteRoute" mat-fab extended color="primary" style="margin-top: 5px;"
+                (click)="deleteRoute()">
+                <mat-icon>delete</mat-icon>
+                Delete Route
+            </button>
+        </footer>
+    </fieldset>
+    }
+
+</section>

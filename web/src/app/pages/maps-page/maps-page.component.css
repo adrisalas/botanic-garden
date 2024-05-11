@@ -1,0 +1,29 @@
+.marker-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: aquamarine;
+}
+
+#map {
+    height: 400px;
+    width: 600px;
+    margin-left: 10px;
+    border: 1px solid var(--color-primary);
+}
+
+.main-map-page {
+    display: flex;
+}
+
+.btn-point {
+    background-color: var(--color-primary);
+}
+
+.btn-path {
+    background-color: rgb(130, 11, 222);
+}
+
+.btn-route {
+    background-color: orangered;
+}

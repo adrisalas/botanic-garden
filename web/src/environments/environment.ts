@@ -4,5 +4,8 @@ export const environment = {
     urlPlants: `/api/plants`,
     urlLogin: `/api/auth/login`,
     urlNews: `/api/news`,
-    urlPOIs: `/api/poi`
+    urlPOIs: `/api/poi`,
+    urlMapPoints: `api/map/points`,
+    urlMapPaths: `api/map/paths`,
+    urlMapRoutes: `/api/map/routes`
 };

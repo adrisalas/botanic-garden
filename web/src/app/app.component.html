@@ -8,6 +8,12 @@
     <h1>
       Botanical Garden - Admin App
     </h1>
+    @if(tokenJWT != ""){
+    <button mat-mini-fab color="primary" aria-label="Click to logout" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+    }
+
   </mat-toolbar>
 
   @if(tokenJWT != ""){

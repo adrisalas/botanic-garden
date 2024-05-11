@@ -1,0 +1,93 @@
+<section class="formContainer">
+    <header>
+        <h4>Create / Edit Point</h4>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="closeMenu()">
+            <mat-icon>close</mat-icon>
+            Close
+        </button>
+    </header>
+    @if(point != undefined){
+    <mat-form-field>
+        <mat-label>Id</mat-label>
+        <input matInput [(ngModel)]="point!.id" readonly disabled>
+    </mat-form-field>
+    }
+
+    <p class="textDetails">(Click on the map to get lat and long)</p>
+    <section class="lat-long-container">
+        @if(point != undefined){
+        <mat-form-field>
+            <mat-label>Latitude *</mat-label>
+            <input matInput [(ngModel)]="point!.lat">
+        </mat-form-field>
+        }
+        @if(point != undefined){
+        <mat-form-field>
+            <mat-label>Longitude *</mat-label>
+            <input matInput [(ngModel)]="point!.lon">
+        </mat-form-field>
+        }
+    </section>
+
+    <fieldset>
+        <legend>Items</legend>
+        <!--...............PLANTS CHIPS.............-->
+        <mat-form-field>
+            <mat-label>Associated Plants</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Plants selection">
+                @for (plant of selectedPlants; track plant) {
+                <mat-chip-row (removed)="removePlant(plant)">
+                    {{plant.id}}-{{plant.commonName}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + plant.commonName">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input placeholder="Add Plant..." #plantsInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                (input)="filterPlants($event)" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedPlant($event)">
+                @for (plant of filteredPlants; track plant) {
+                <mat-option [value]="plant.id+''">{{plant.id}}--{{plant.commonName}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        <!--...............POI CHIPS.............-->
+        <mat-form-field>
+            <mat-label>Associated POIs</mat-label>
+            <mat-chip-grid #chipGridPOI aria-label="POIs selection">
+                @for (poi of selectedPOIs; track poi) {
+                <mat-chip-row (removed)="removePOI(poi)">
+                    {{poi.id}}-{{poi.name}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + poi.name">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input placeholder="Add POI..." #poisInput [matChipInputFor]="chipGridPOI" [matAutocomplete]="autoPOI"
+                (input)="filterPOIs($event)" />
+            <mat-autocomplete #autoPOI="matAutocomplete" (optionSelected)="selectedPOI($event)">
+                @for (poi of filteredPOIs; track poi) {
+                <mat-option [value]="poi.id+''">{{poi.id}}--{{poi.name}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+    </fieldset>
+
+    <footer>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="saveOrUpdatePoint()">
+            <mat-icon>done</mat-icon>
+            Save
+        </button>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="deletePoint()"
+            [disabled]="(this.point?.id == 0) ? true : false">
+            <mat-icon>delete</mat-icon>
+            Delete
+        </button>
+        <button mat-fab extended color="primary" style="margin-top: 5px;" (click)="clearPoint()">
+            <mat-icon>remove</mat-icon>
+            Clear
+        </button>
+    </footer>
+</section>

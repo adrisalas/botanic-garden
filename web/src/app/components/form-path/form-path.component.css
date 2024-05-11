@@ -1,0 +1,6 @@
+header {
+    >button {
+        box-shadow: none;
+        background: rgb(194, 31, 31);
+    }
+}

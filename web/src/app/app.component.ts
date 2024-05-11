@@ -31,4 +31,8 @@ export class AppComponent {
     });
   }
 
+  logout() {
+    this.generalData.tokenJWT.set('');
+  }
+
 }

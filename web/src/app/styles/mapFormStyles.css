@@ -1,0 +1,48 @@
+header {
+    display: flex;
+    justify-content: center;
+
+    >h4 {
+        flex-grow: 3;
+        margin: 0;
+        line-height: 50px;
+    }
+}
+
+
+.formContainer {
+    width: 500px;
+    text-align: center;
+    margin: 20px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+
+    >button {
+        width: 30%;
+    }
+
+    >button:nth-child(1) {
+        background-color: var(--color-green);
+    }
+
+    >button:nth-child(2) {
+        background-color: var(--color-red);
+    }
+
+    >button:disabled {
+        background: lightgrey;
+    }
+}
+
+.lat-long-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.textDetails {
+    font-size: 0.8rem;
+    font-style: italic;
+}
