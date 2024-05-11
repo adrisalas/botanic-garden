@@ -37,7 +37,7 @@ class RouteGeneratorTest {
 
     @Test
     fun generateBestRoutePath1(): Unit = runBlocking {
-        //    1 - - - - - - - - - -  5
+        //   [1] - - - - - - - - -  [5]
         //    |                    / |
         //    |  /- - - -  - - - -/  |
         //    | /                    |
@@ -62,7 +62,7 @@ class RouteGeneratorTest {
 
     @Test
     fun generateBestRoutePath1Reverse(): Unit = runBlocking {
-        //    1 - - - - - - - - - -  5
+        //   [1] - - - - - - - - -  [5]
         //    |                    / |
         //    |  /- - - -  - - - -/  |
         //    | /                    |
@@ -88,10 +88,10 @@ class RouteGeneratorTest {
     @Test
     fun generateBestRouteFork(): Unit = runBlocking {
         coEvery { pathUseCases.findAll() }.returns(
-            //    2 - - - - - - - - - - 1
-            //   / \
-            //  /   \
-            // 4     5
+            //     2 - - - - - - - - - - [1]
+            //    / \
+            //   /   \
+            // [4]   [5]
             flowOf(
                 Path(point1, point2, 500.0),
                 Path(point2, point4, 10.0),
@@ -112,11 +112,11 @@ class RouteGeneratorTest {
     @Test
     fun generateBestRouteInfiniteLoop(): Unit = runBlocking {
         coEvery { pathUseCases.findAll() }.returns(
-            // 1 - - - - - - - - - 5
-            // |
-            // 2 - 3
-            //  \ /
-            //   4
+            // [1] - - - - - - - - - [5]
+            //  |
+            //  2 - 3
+            //   \ /
+            //    4
             flowOf(
                 Path(point1, point2, 10.0),
                 Path(point2, point3, 10.0),
@@ -136,9 +136,9 @@ class RouteGeneratorTest {
     @Test
     fun impossibleRoute(): Unit = runBlocking {
         coEvery { pathUseCases.findAll() }.returns(
-            // 1     5
-            // |     |
-            // 2     4
+            // [1]   [5]
+            //  |     |
+            //  2     4
             flowOf(
                 Path(point1, point2, 10.0),
                 Path(point4, point5, 10.0)
