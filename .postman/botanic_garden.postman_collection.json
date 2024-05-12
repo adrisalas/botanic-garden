@@ -1,0 +1,1739 @@
+{
+	"info": {
+		"_postman_id": "8d0f14f4-3fd7-404e-a655-410e41e0b702",
+		"name": "TFG - Botanic Garden",
+		"description": "[https://github.com/adrisalas/botanic-garden](https://github.com/adrisalas/botanic-garden)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33659509"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Find all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/auth/users",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find user by username",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/auth/users/{{username}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"users",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"uma\",\n    \"password\": \"Uma2024_\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/auth/users",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"uma\",\n    \"password\": \"Uma2024_\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"uma\",\n    \"oldPassword\": \"Uma2024_\",\n    \"newPassword\": \"UniversidadDeMalaga2024_\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/auth/users/{{username}}/password",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"users",
+								"{{username}}",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/auth/users/{{username}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"users",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Plant",
+			"item": [
+				{
+					"name": "Find all plants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/plants",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"plants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find plant by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/plants/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"plants",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create plant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commonName\": \"Algae\",\n    \"scientificName\": \"Algae Latinescus\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\",\n    \"image\": \"https://algasdegalicia.com/wp-content/uploads/12-algamar-nori-sushi-25g.jpg\",\n    \"type\": \"aquatic\",\n    \"details\": {\n        \"season\": \"WINTER\",\n        \"leafType\": null,\n        \"water\": null,\n        \"flowering\": {\n            \"first\": \"JANUARY\",\n            \"second\": \"MARCH\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/plants",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"plants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify plant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commonName\": \"Algae\",\n    \"scientificName\": \"Algae Latinescus\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\",\n    \"image\": \"https://algasdegalicia.com/wp-content/uploads/12-algamar-nori-sushi-25g.jpg\",\n    \"type\": \"aquatic\",\n    \"details\": {\n        \"season\": \"WINTER\",\n        \"leafType\": null,\n        \"water\": null,\n        \"flowering\": {\n            \"first\": \"JANUARY\",\n            \"second\": \"MARCH\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/plants/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"plants",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete plant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/plants/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"plants",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poi",
+			"item": [
+				{
+					"name": "Find all poi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/poi",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"poi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find poi by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/poi/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"poi",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create poi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Entrance\",\n    \"description\": \"Entrance to the Botanic Park, here you can buy your tickets and get panflets for your visit.\",\n    \"image\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/poi",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"poi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify poi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Entrance\",\n    \"description\": \"Entrance to the Botanic Park, here you can buy your tickets and get panflets for your visit.\",\n    \"image\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/poi/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"poi",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete poi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/poi/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"poi",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Beacon",
+			"item": [
+				{
+					"name": "Find all Beacons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/beacons",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"beacons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find beacon by id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/beacons/{{beaconId}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"beacons",
+								"{{beaconId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Beacon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"01234567-0123-0123-0123-0123456789ab-4-7\",\n    \"item\": {\n        \"id\": 1,\n        \"type\": \"PLANT\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/beacons",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"beacons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify beacon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"01234567-0123-0123-0123-0123456789ab-4-7\",\n    \"item\": {\n        \"id\": 1,\n        \"type\": \"POI\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/beacons",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"beacons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Beacon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/beacons/{{beaconId}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"beacons",
+								"{{beaconId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "Find all News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/news",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find news by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/news/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create news",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Title\",\n    \"subtitle\": \"Subtitle\",\n    \"date\": \"2024-07-29T10:30:00.000Z\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut auctor ex. Sed convallis ligula massa, vitae rhoncus nulla gravida vitae. Suspendisse nunc ante, varius a molestie quis, malesuada at massa. In euismod, diam id molestie laoreet, lacus lectus pharetra mi, eget consectetur nisl ipsum nec erat. Proin laoreet vitae tellus nec pretium. Nulla semper est ac diam posuere blandit. Vestibulum sit amet ex mi. Nulla turpis est, imperdiet non ipsum in, tincidunt pretium magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus nec ultrices nisi. Vestibulum tincidunt nibh eu sem maximus aliquet. Duis sollicitudin, eros at aliquet egestas, ante nibh euismod lectus, at rutrum enim sem quis quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/news",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify news",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"title\": \"Title\",\n    \"subtitle\": \"Subtitle\",\n    \"date\": \"2024-07-29T10:30:00.000Z\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut auctor ex. Sed convallis ligula massa, vitae rhoncus nulla gravida vitae. Suspendisse nunc ante, varius a molestie quis, malesuada at massa. In euismod, diam id molestie laoreet, lacus lectus pharetra mi, eget consectetur nisl ipsum nec erat. Proin laoreet vitae tellus nec pretium. Nulla semper est ac diam posuere blandit. Vestibulum sit amet ex mi. Nulla turpis est, imperdiet non ipsum in, tincidunt pretium magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus nec ultrices nisi. Vestibulum tincidunt nibh eu sem maximus aliquet. Duis sollicitudin, eros at aliquet egestas, ante nibh euismod lectus, at rutrum enim sem quis quam.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/news/{{id}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"{{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete news",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/news/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Map - Points",
+			"item": [
+				{
+					"name": "Find all points",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/points",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find point by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/points/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"points",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create point",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lat\": 43.52115, \n    \"lon\": -5.61543,\n    \"items\": [\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/points",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify point",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"lat\": 36.76133496223676,\n    \"lon\": -6.153669272447632,\n    \"items\": [\n        {\n            \"type\": \"POI\",\n            \"id\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/points/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"points",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete point",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/points/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"points",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Map - Paths",
+			"item": [
+				{
+					"name": "Find all paths",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/paths",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"paths"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all paths by pointid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/paths?pointId={{pointId}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"paths"
+							],
+							"query": [
+								{
+									"key": "pointId",
+									"value": "{{pointId}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create path",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pointAId\": 1,\n    \"pointBId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/paths",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"paths"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete path",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/paths/{{pointAId}}/{{pointBId}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"paths",
+								"{{pointAId}}",
+								"{{pointBId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Map - Routes",
+			"item": [
+				{
+					"name": "Find all routes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/routes",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all routes by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/routes/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"routes",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create route",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Easy route\", \n    \"points\": [1, 2, 8, 9, 10, 11]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/routes",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify route",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 15,\n    \"name\": \"Easy route\", \n    \"points\": [1,2,3,4,1]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/routes/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"routes",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete routes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/routes/{{id}}",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"routes",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Map - User Routes",
+			"item": [
+				{
+					"name": "Find my route",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/map/my-route",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"my-route"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create route",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"type\": \"POI\",\n        \"id\": 1\n    },\n    {\n        \"type\": \"POI\",\n        \"id\": 3\n    },\n    {\n        \"type\": \"PLANT\",\n        \"id\": 4\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/map/my-route",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"map",
+								"my-route"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gamification - Find Plant",
+			"item": [
+				{
+					"name": "Find plant game - get plant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/gamification/find-plant",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"gamification",
+								"find-plant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find plant game - set plant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plantId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/gamification/find-plant",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"gamification",
+								"find-plant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find plant game - deactivate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/gamification/find-plant",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"gamification",
+								"find-plant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gamification - Points",
+			"item": [
+				{
+					"name": "Points - my points",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{socket}}/api/gamification/my-points",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"gamification",
+								"my-points"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Points - all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/gamification/all-users",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"gamification",
+								"all-users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Telemetry",
+			"item": [
+				{
+					"name": "Set beacon seen",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"beaconId\": \"01234567-0123-0123-0123-0123456789ab-4-7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/telemetry",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"telemetry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statistics - most visited plants",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/telemetry/most-visited-plants",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"telemetry",
+								"most-visited-plants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statistics - most visited pois",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/telemetry/most-visited-pois",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"telemetry",
+								"most-visited-pois"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statistics - visitors per hour",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/telemetry/visitors-per-hour",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"telemetry",
+								"visitors-per-hour"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statistics - visitors per day",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{socket}}/api/telemetry/visitors-per-day",
+							"protocol": "https",
+							"host": [
+								"{{socket}}"
+							],
+							"path": [
+								"api",
+								"telemetry",
+								"visitors-per-day"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "beaconId",
+			"value": "01234567-0123-0123-0123-0123456789ab-4-7"
+		},
+		{
+			"key": "username",
+			"value": "adri",
+			"type": "string"
+		}
+	]
+}
