@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Map_Point } from '../model/map_interfaces';
-import { environment } from '../../environments/environment.development';
 import { GeneralStoreService } from './general-store.service';
 import { LatLngExpression } from 'leaflet';
 
