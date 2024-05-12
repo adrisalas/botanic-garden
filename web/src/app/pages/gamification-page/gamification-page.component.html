@@ -1,3 +1,60 @@
 <div class="headerPage">
     <h2>Gamification</h2>
 </div>
+<section class="gamification-plant">
+    <mat-form-field>
+        <mat-label>Game - Active Plant</mat-label>
+        <input matInput [value]="activePlant.id +' -- '+activePlant.commonName" readonly>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Change active plant</mat-label>
+        <mat-select [(ngModel)]="idSelectedPlant" (selectionChange)="changeActivePlant($event)">
+            <mat-option [value]="-1">No active plant</mat-option>
+            @for (plant of allPlants; track plant) {
+            <mat-option [value]="plant.id">{{plant.id}} -- {{plant.commonName}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</section>
+
+<div class="wrapper-filter">
+    <mat-form-field class="filterInput">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Type username or number of points" #input>
+    </mat-form-field>
+</div>
+
+<div class="table-container">
+
+    <table mat-table matSort [dataSource]="dataSourceUsersPoints" matSortActive="created" matSortDisableClear
+        matSortDirection="desc">
+
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+            <td mat-cell *matCellDef="let user">{{user.username}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="points">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Points</th>
+            <td mat-cell *matCellDef="let user">{{user.points}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"></tr>
+
+    </table>
+</div>

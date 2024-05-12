@@ -8,5 +8,7 @@ export const environment = {
     urlBeacons: `/api/beacons`,
     urlMapPoints: `api/map/points`,
     urlMapPaths: `api/map/paths`,
-    urlMapRoutes: `/api/map/routes`
+    urlMapRoutes: `/api/map/routes`,
+    urlGamificationPlant: `/api/gamification/find-plant`,
+    urlGamificationPoints: `/api/gamification/all-users`
 };

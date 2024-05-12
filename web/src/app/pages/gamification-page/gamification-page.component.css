@@ -1,0 +1,23 @@
+section.gamification-plant {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    >mat-form-field {
+        flex-grow: 2;
+        max-width: 400px;
+        padding-left: 20px;
+    }
+}
+
+.table-container,
+.filterInput {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+div.wrapper-filter {
+    width: 100%;
+    text-align: center;
+}
