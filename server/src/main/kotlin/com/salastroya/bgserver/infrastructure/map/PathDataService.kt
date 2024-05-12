@@ -38,7 +38,8 @@ class PathDataService(
     }
 
     override suspend fun update(path: Path): Path {
-        return repository.update(path.toDto()).toModel()
+        repository.update(path.toDto())
+        return path
     }
 
     suspend fun Path.toDto(): PathDto {
