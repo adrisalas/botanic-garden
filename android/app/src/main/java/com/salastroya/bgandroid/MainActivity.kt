@@ -19,16 +19,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.salastroya.bgandroid.pages.ContentLogin
+import com.salastroya.bgandroid.pages.ContentSignUp
+import com.salastroya.bgandroid.pages.CustomMap
 import com.salastroya.bgandroid.pages.HomePage
+import com.salastroya.bgandroid.pages.MapsCustomRoutePage
+import com.salastroya.bgandroid.pages.MapsMenuPage
 import com.salastroya.bgandroid.pages.NearbyPlantsPage
 import com.salastroya.bgandroid.pages.NewsDetailPage
 import com.salastroya.bgandroid.pages.NewsPage
-import com.salastroya.bgandroid.pages.Page404
 import com.salastroya.bgandroid.pages.PlantDetailPage
 import com.salastroya.bgandroid.pages.ProfilePage
 import com.salastroya.bgandroid.pages.SearchPage
-import com.salastroya.bgandroid.pages.contentLogin
-import com.salastroya.bgandroid.pages.contentSignUp
 import com.salastroya.bgandroid.services.BottomNavigation
 import com.salastroya.bgandroid.services.Routes
 import com.salastroya.bgandroid.ui.theme.BotanicGardenTheme
@@ -100,20 +102,26 @@ private fun MainScreenNavigationConfigurations(
             NewsPage(navController)
         }
         composable(route = Routes.map) {
-            Page404()
+            MapsMenuPage(navController = navController)
         }
         composable(route = Routes.profile) {
             ProfilePage(navController = navController)
         }
         composable(route = Routes.login) {
-            contentLogin(navController = navController)
+            ContentLogin(navController = navController)
         }
         composable(route = Routes.signUp) {
-            contentSignUp(navController = navController)
+            ContentSignUp(navController = navController)
         }
         composable(route = Routes.newsDetail + "/{newsId}") {
             val newsId = it.arguments?.getString("newsId")?.toIntOrNull() ?: 0
             NewsDetailPage(newsId = newsId, navController = navController)
+        }
+        composable(route = Routes.createRoute) {
+            MapsCustomRoutePage(navController = navController)
+        }
+        composable(route = Routes.renderMap) {
+            CustomMap(navController = navController)
         }
     }
 }

@@ -54,4 +54,15 @@
 
     <string name="msgNeedLogin">You need to login to view this page</string>
 
+    <!-- ....Maps.... -->
+    <string name="titleMapsMenu">Maps - Routes</string>
+    <string name="titleCreateRoute">Create my route</string>
+    <string name="buttonCreateRoute">Create</string>
+    <string name="subtitleCreateRoutePlants">What plants do you want to see?</string>
+    <string name="subtitleCreateRoutePOIs">What points of interest do you want to see?</string>
+    <string name="titleMyRoute">My Custom Route</string>
+    <string name="titleGenericRoutes">Generic Routes</string>
+    <string name="noCustomRoute">Create a custom route to see it here.</string>
+    <string name="noGenericRoutes">There was a problem loading generic routes.</string>
+    <string name="buttonLoadRoute">Open Route</string>
 </resources>

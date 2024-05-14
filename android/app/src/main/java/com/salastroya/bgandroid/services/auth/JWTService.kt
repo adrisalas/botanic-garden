@@ -2,9 +2,12 @@ package com.salastroya.bgandroid.services.auth
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Base64
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 
 
 object JWTService {
@@ -32,6 +35,12 @@ object JWTService {
     }
 
     fun getUserName(): String {
-        return "Stella"
+        val jwtParts = jwtStore.split(".")
+        if (jwtParts.size < 2) {
+            return ""
+        }
+        val json = String(Base64.decode(jwtParts[1], Base64.DEFAULT))
+        val jsonObject = Gson().fromJson(json, JsonObject::class.java)
+        return jsonObject.get("username").asString
     }
 }

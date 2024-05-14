@@ -42,7 +42,7 @@ import retrofit2.HttpException
 
 
 @Composable
-fun contentLogin(navController: NavController) {
+fun ContentLogin(navController: NavController) {
     val context = LocalContext.current
     val (username, setUsername) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
@@ -189,6 +189,7 @@ suspend fun callLoginService(
         AuthService.login(username, password)
         toast.setText("Login successful")
         navController.navigate(Routes.home)
+
     } catch (ex: HttpException) {
         toast.setText(ex.serverErrorMessage())
     } finally {

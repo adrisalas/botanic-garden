@@ -36,7 +36,7 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 
 @Composable
-fun contentSignUp(navController: NavController) {
+fun ContentSignUp(navController: NavController) {
     val context = LocalContext.current
     val (username, setUsername) = remember { mutableStateOf("") }
     val (password, setPasword) = remember { mutableStateOf("") }

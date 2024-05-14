@@ -11,4 +11,6 @@ object Routes {
     const val profile = "profile"
     const val login = "login"
     const val signUp = "signUp"
+    const val createRoute = "createRoute"
+    const val renderMap = "renderMap"
 }
