@@ -21,7 +21,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +41,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.BotanicGardenApplication
 import com.salastroya.bgandroid.R
+import com.salastroya.bgandroid.components.OutlinedCardExample
+import com.salastroya.bgandroid.model.GamificationPoints
+import com.salastroya.bgandroid.model.Plant
+import com.salastroya.bgandroid.services.GamificationService
 import com.salastroya.bgandroid.services.Routes
 import com.salastroya.bgandroid.services.auth.JWTService
+import com.salastroya.bgandroid.services.auth.JWTService.getUserName
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -65,16 +74,16 @@ fun ProfilePage(navController: NavController) {
         }
 
         if (tokenJWT.isNullOrEmpty()) {
-            contentIfNotLogged(navController = navController)
+            contentIfNotLoggedProfile(navController = navController)
         } else {
-            contentIfLogged(navController = navController, context)
+            contentIfLoggedProfile(navController = navController, context)
         }
 
     }
 }
 
 @Composable
-fun contentIfLogged(navController: NavController, context: Context) {
+fun contentIfLoggedProfile(navController: NavController, context: Context) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -97,7 +106,7 @@ fun contentIfLogged(navController: NavController, context: Context) {
         }
 
         Text(
-            text = JWTService.getUserName(),
+            text = getUserName(),
             fontWeight = FontWeight.Light,
             fontSize = 30.sp,
             modifier = Modifier
@@ -106,12 +115,15 @@ fun contentIfLogged(navController: NavController, context: Context) {
         )
     }
 
-    Divider(
-        color = Color.LightGray,
-        modifier = Modifier
-            .height(1.dp)
-            .fillMaxWidth()
-    )
+    CustomDivider()
+
+    MyPoints()
+
+    CustomDivider()
+
+    GamificationContent()
+
+    CustomDivider()
 
     Button(
         onClick = { /*TODO*/ },
@@ -160,7 +172,86 @@ fun contentIfLogged(navController: NavController, context: Context) {
 }
 
 @Composable
-fun contentIfNotLogged(navController: NavController) {
+fun MyPoints() {
+    var myPoints by remember { mutableStateOf<GamificationPoints>(GamificationPoints("", 0)) }
+    LaunchedEffect(Unit) {
+        val points = GamificationService.findMyPoints()
+        if (points != null) {
+            myPoints = points
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "My Points: ${myPoints.points}",
+            fontWeight = FontWeight.Light,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(10.dp)
+        )
+    }
+}
+
+@Composable
+private fun GamificationContent() {
+    var activePlant by remember {
+        mutableStateOf<Plant>(
+            Plant(
+                0,
+                "No active plant at this time",
+                ""
+            )
+        )
+    }
+    LaunchedEffect(Unit) {
+        val plant = GamificationService.findActivePlant()
+        if (plant != null) {
+            activePlant = plant
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = "Current Challenge",
+            fontWeight = FontWeight.Light,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(10.dp)
+        )
+
+        Text(
+            text = "Find active plant to earn 25 points.",
+            fontWeight = FontWeight.Light,
+            fontSize = 15.sp
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Current active plant:",
+                fontWeight = FontWeight.Light,
+                fontSize = 17.sp
+            )
+            OutlinedCardExample(
+                text = activePlant.commonName,
+                colorResource(id = R.color.teal_700),
+                painterIcon = painterResource(id = R.drawable.autumn_icon),
+                colorIcon = colorResource(id = R.color.green_leaf)
+            )
+        }
+    }
+}
+
+@Composable
+fun contentIfNotLoggedProfile(navController: NavController) {
     Text(
         text = stringResource(id = R.string.msgNeedLogin),
         textAlign = TextAlign.Center,
@@ -208,4 +299,14 @@ fun contentIfNotLogged(navController: NavController) {
     ) {
         Text(text = stringResource(id = R.string.titleSignUp))
     }
+}
+
+@Composable
+fun CustomDivider() {
+    Divider(
+        color = Color.LightGray,
+        modifier = Modifier
+            .height(1.dp)
+            .fillMaxWidth()
+    )
 }

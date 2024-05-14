@@ -1,6 +1,5 @@
 package com.salastroya.bgandroid.services
 
-import com.salastroya.bgandroid.model.BeaconDto
 import com.salastroya.bgandroid.model.ItemType
 import com.salastroya.bgandroid.model.Plant
 import com.salastroya.bgandroid.services.beacons.BeaconService
@@ -25,16 +24,16 @@ object NearbyPlantService {
 
     }
 
-    private suspend fun Beacon.toBeaconDtoWithDistance(): Pair<BeaconDto, Double>? {
+    private suspend fun Beacon.toBeaconDtoWithDistance(): Pair<com.salastroya.bgandroid.model.BeaconDto, Double>? {
         return BeaconService.findByBeacon(this)
             ?.let { Pair(it, this.distance) }
     }
 
-    private fun Pair<BeaconDto?, Double>.isAPlant(): Boolean {
+    private fun Pair<com.salastroya.bgandroid.model.BeaconDto?, Double>.isAPlant(): Boolean {
         return this.first?.item?.type == ItemType.PLANT
     }
 
-    private fun Pair<BeaconDto?, Double>.toPlantIdWithDistance(): Pair<Int, Double>? {
+    private fun Pair<com.salastroya.bgandroid.model.BeaconDto?, Double>.toPlantIdWithDistance(): Pair<Int, Double>? {
         return this.first?.item?.id?.let { Pair(it, this.second) }
     }
 

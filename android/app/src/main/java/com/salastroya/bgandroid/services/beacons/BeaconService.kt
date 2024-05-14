@@ -2,7 +2,6 @@ package com.salastroya.bgandroid.services.beacons
 
 import android.util.Log
 import com.salastroya.bgandroid.BuildConfig
-import com.salastroya.bgandroid.model.BeaconDto
 import org.altbeacon.beacon.Beacon
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,7 +9,7 @@ import retrofit2.http.GET
 
 private interface BeaconClient {
     @GET("api/beacons")
-    suspend fun findAll(): List<BeaconDto>
+    suspend fun findAll(): List<com.salastroya.bgandroid.model.BeaconDto>
 }
 
 object BeaconService {
@@ -20,16 +19,16 @@ object BeaconService {
         .build()
     private val client: BeaconClient = retrofit.create(BeaconClient::class.java)
 
-    private var cache: List<BeaconDto> = emptyList()
+    private var cache: List<com.salastroya.bgandroid.model.BeaconDto> = emptyList()
     private var lastCacheUpdate: Long = 0L
 
 
-    suspend fun findByBeacon(beacon: Beacon): BeaconDto? {
+    suspend fun findByBeacon(beacon: Beacon): com.salastroya.bgandroid.model.BeaconDto? {
         return findAll()
             .find { it.id == beacon.normalizeId() }
     }
 
-    private suspend fun findAll(): List<BeaconDto> {
+    private suspend fun findAll(): List<com.salastroya.bgandroid.model.BeaconDto> {
         if (shouldUpdateCache()) {
             try {
                 cache = client.findAll()
