@@ -4,8 +4,6 @@ Android App for a Botanic Garden using IoT Beacons
 
 [![Server tests](https://github.com/adrisalas/botanic-garden/actions/workflows/server-test.yml/badge.svg?branch=main)](https://github.com/adrisalas/botanic-garden/actions/workflows/server-test.yml)
 
-⚠️ The current status of the project is work in progress
-
 ## Installation
 
 1. Generate the executables/statics files for each component:
