@@ -1,5 +1,11 @@
 package com.salastroya.bgandroid.services.beacons
 
+import com.salastroya.bgandroid.services.TelemetryService
+import com.salastroya.bgandroid.services.beacons.BeaconService.normalizeId
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.altbeacon.beacon.Beacon
 
 /**
@@ -8,11 +14,21 @@ import org.altbeacon.beacon.Beacon
  * a time window of seen beacons
  */
 object NearbyBeaconService {
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private const val TIME_WINDOW_MILLIS = 10_000
     private var beaconSeen = emptyList<Beacon>()
 
     fun add(beacon: Beacon) {
-        beaconSeen = getNearbyBeacons()
+        val currentBeacons = getNearbyBeacons()
+        val isNewBeacon = !currentBeacons.contains(beacon)
+
+        if (isNewBeacon) {
+            serviceScope.launch {
+                TelemetryService.sendTelemetry(beacon.normalizeId())
+            }
+        }
+
+        beaconSeen = currentBeacons
             .filter { it != beacon }
             .plus(beacon)
     }

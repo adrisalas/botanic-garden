@@ -41,7 +41,7 @@ object BeaconService {
         return cache
     }
 
-    private fun Beacon.normalizeId(): String {
+    fun Beacon.normalizeId(): String {
         val id1 = this.id1.toUuid()
         val id2 = this.id2.toInt()
         val id3 = this.id3.toInt()
