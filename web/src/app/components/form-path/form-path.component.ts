@@ -40,14 +40,28 @@ export class FormPathComponent {
 
   loadAllPoints() {
     this.mapPointService.findAllPoints().subscribe({
-      next: result => { this.allPoints = result; this.pointsA = result; this.pointsB = result },
+      next: result => {
+        this.allPoints = result.sort((p1, p2) => {
+          let id1 = (p1.id == null) ? 0 : p1.id
+          let id2 = (p2.id == null) ? 0 : p2.id
+          return id1 - id2
+        });
+        this.pointsA = result;
+        this.pointsB = result
+      },
       error: err => console.error('An error occurred loading all points', err.reason)
     });
   }
 
   loadAllPaths() {
     this.mapPathService.findAllPaths().subscribe({
-      next: result => { this.allPaths = result },
+      next: result => {
+        this.allPaths = result.sort((path1, path2) => {
+          let id1 = (path1.pointA.id == null) ? 0 : path1.pointA.id
+          let id2 = (path2.pointA.id == null) ? 0 : path2.pointA.id
+          return id1 - id2
+        });
+      },
       error: err => console.error('An error occurred loading all paths', err.reason)
     });
   }

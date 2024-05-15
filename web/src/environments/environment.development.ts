@@ -10,5 +10,6 @@ export const environment = {
     urlMapPaths: `api/map/paths`,
     urlMapRoutes: `/api/map/routes`,
     urlGamificationPlant: `/api/gamification/find-plant`,
-    urlGamificationPoints: `/api/gamification/all-users`
+    urlGamificationPoints: `/api/gamification/all-users`,
+    urlStats: `/api/telemetry/`
 };
