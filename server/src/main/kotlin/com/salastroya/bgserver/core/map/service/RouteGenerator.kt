@@ -42,24 +42,20 @@ class RouteGenerator(private val pathUseCases: PathUseCases) {
         val adjacentPoints = generateAdjacentMap(paths)
 
         val nextRoutesToSearch = mutableListOf(
-            RouteToExplore(listOf(startNode), itemsToVisit, 0.0)
+            RouteToExplore(listOf(startNode), itemsToVisit, 0.0, 0)
         )
 
         while (coroutineContext.isActive) {
             delay(1) // Let other coroutines run
             nextRoutesToSearch.sortBy { it.meters }
-            val currentRoute = nextRoutesToSearch.removeFirst()
+            val currentRoute = nextRoutesToSearch.removeFirstOrNull()
+                ?: throw NoSuchElementException("Requested items are not reachable")
 
             val lastPoint = currentRoute.route.last()
 
             val itemsNotFound = currentRoute.itemsNotFound.filterNot { lastPoint.items.contains(it) }
             if (itemsNotFound.isEmpty()) {
                 return currentRoute.route
-            }
-
-            val secondToLastPointId = when (currentRoute.route.size) {
-                0, 1 -> null
-                else -> currentRoute.route[currentRoute.route.size - 2].id
             }
 
             adjacentPoints[lastPoint.id]?.forEach { pointIdWithCost ->
@@ -71,14 +67,26 @@ class RouteGenerator(private val pathUseCases: PathUseCases) {
                 val degreeWasNotExceeded = timesNextPointWasCrossed < degree
 
                 val wasItemFound = itemsNotFound.size != currentRoute.itemsNotFound.size
-                val isNotTurningBack = nextPoint.id != secondToLastPointId
 
-                if ((wasItemFound || isNotTurningBack) && degreeWasNotExceeded) {
+                val lastItemFoundAtPosition = when (wasItemFound) {
+                    true -> currentRoute.route.size
+                    false -> currentRoute.lastItemFoundAtPosition
+                }
+
+                val isNotRevisitingPointsAfterPivot = currentRoute.route
+                    .filterIndexed { index, point ->
+                        val isAfterPivot = index >= lastItemFoundAtPosition
+                        val pointWasVisited = nextPoint.id == point.id
+                        return@filterIndexed isAfterPivot && pointWasVisited
+                    }.isEmpty()
+
+                if (isNotRevisitingPointsAfterPivot && degreeWasNotExceeded) {
                     nextRoutesToSearch.add(
                         RouteToExplore(
                             route = currentRoute.route + nextPoint,
                             itemsNotFound = itemsNotFound,
-                            meters = currentRoute.meters + cost
+                            meters = currentRoute.meters + cost,
+                            lastItemFoundAtPosition = lastItemFoundAtPosition
                         )
                     )
                 }
@@ -93,7 +101,8 @@ class RouteGenerator(private val pathUseCases: PathUseCases) {
     private data class RouteToExplore(
         val route: List<Point>,
         val itemsNotFound: List<Item>,
-        val meters: Double
+        val meters: Double,
+        val lastItemFoundAtPosition: Int
     )
 
     private suspend fun generateAdjacentMap(paths: List<Path>): Map<Int, List<PointIdWithCost>> {
