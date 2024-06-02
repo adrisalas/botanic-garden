@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.R
-import com.salastroya.bgandroid.controller.returnPainterImg
+import com.salastroya.bgandroid.components.getImagePainter
 import com.salastroya.bgandroid.model.GardenNews
 import com.salastroya.bgandroid.services.NewsService
 
@@ -56,7 +56,7 @@ fun NewsInfo(news: GardenNews?) {
 
             item {
                 Image(
-                    painter = returnPainterImg(news.image, context = context),
+                    painter = getImagePainter(news.image, context = context),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()

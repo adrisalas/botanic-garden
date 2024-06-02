@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.R
-import com.salastroya.bgandroid.controller.returnPainterImg
+import com.salastroya.bgandroid.components.getImagePainter
 import com.salastroya.bgandroid.model.GardenIcon
 import com.salastroya.bgandroid.model.Plant
 import com.salastroya.bgandroid.services.PlantService
@@ -63,7 +63,7 @@ fun PlantInfo(plant: Plant?) {
 
             item {
                 Image(
-                    painter = returnPainterImg(image = plant.image, context = context),
+                    painter = getImagePainter(image = plant.image, context = context),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()

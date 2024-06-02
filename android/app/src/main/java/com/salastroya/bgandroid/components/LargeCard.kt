@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.salastroya.bgandroid.R
-import com.salastroya.bgandroid.controller.returnPainterImg
 import com.salastroya.bgandroid.model.Plant
 import com.salastroya.bgandroid.services.Routes
 
@@ -124,7 +123,7 @@ fun LargeCard(
                 modifier = Modifier.size(width = 120.dp, height = 200.dp)
             ) {
                 Image(
-                    painter = returnPainterImg(plant.image, context = context),
+                    painter = getImagePainter(plant.image, context = context),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
