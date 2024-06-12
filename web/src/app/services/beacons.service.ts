@@ -38,7 +38,6 @@ export class BeaconsService {
   }
 
   updateBeacon(beacon: Beacon): Observable<any> {
-    debugger;
     let jsonRequest;
     var headers = new HttpHeaders({
       "Content-Type": "application/json",

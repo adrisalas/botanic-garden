@@ -34,7 +34,9 @@ export class LoginPageComponent {
 
 
   login() {
-    if (this.user.username != "" && this.user.password != "") {
+    if (this.user.username == "" || this.user.password == "") {
+      alert("Both fields are required.");
+    } else {
       this.authService.login(this.user).subscribe({
         next: result => {
           let resultUser = this.authService.decodeTokenToUser(result.token);
@@ -47,9 +49,7 @@ export class LoginPageComponent {
           }
         },
         error: err => console.error('An error occurred', err)
-      })
-    } else {
-      alert("Both fields are required.");
+      });
     }
   }
 }

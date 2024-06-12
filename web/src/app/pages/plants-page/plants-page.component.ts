@@ -17,7 +17,6 @@ import { FormsModule } from '@angular/forms';
 import { GeneralStoreService } from '../../services/general-store.service';
 import { Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { isImageUrl } from '../../controllers/image-controller';
 
 
 @Component({
@@ -113,7 +112,6 @@ export class PlantsPageComponent implements AfterViewInit {
       alert("Select only one record to edit");
       this.isOpenCRUDNav = false;
     } else {
-      debugger;
       this.selectedPlant = this.selection.selected[0];
       if (!this.selectedPlant.details.flowering) {
         this.selectedPlant.details.flowering = {
