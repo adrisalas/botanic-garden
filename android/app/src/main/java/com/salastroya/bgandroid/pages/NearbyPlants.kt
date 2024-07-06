@@ -46,6 +46,7 @@ import com.salastroya.bgandroid.BotanicGardenApplication
 import com.salastroya.bgandroid.R
 import com.salastroya.bgandroid.components.LoadingSpinner
 import com.salastroya.bgandroid.components.SmallCard
+import com.salastroya.bgandroid.components.getImagePainter
 import com.salastroya.bgandroid.model.Plant
 import com.salastroya.bgandroid.services.MainStore
 import com.salastroya.bgandroid.services.NearbyPlantService
@@ -145,14 +146,6 @@ fun NearbyPlantsPage(navController: NavController) {
                 item() {
                     FlowRow(modifier = Modifier.fillMaxSize()) {
                         nearbyPlants.forEach { (plant, distance) ->
-                            val idImage = remember(plant.image) {
-                                context.resources.getIdentifier(
-                                    plant.image,
-                                    "drawable",
-                                    context.packageName
-                                )
-                            }
-
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth(0.5f)
@@ -162,7 +155,7 @@ fun NearbyPlantsPage(navController: NavController) {
                                     }
                             ) {
                                 SmallCard(
-                                    painter = painterResource(idImage),
+                                    painter = getImagePainter(plant.image, context),
                                     title = plant.commonName,
                                     description = "${distance.roundToDecimal(2)} m from you",
                                     icon = Icons.Default.LocationOn,
