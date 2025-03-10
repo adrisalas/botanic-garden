@@ -4,7 +4,10 @@ Android App for a Botanic Garden using IoT Beacons
 
 [![Server tests](https://github.com/adrisalas/botanic-garden/actions/workflows/server-test.yml/badge.svg?branch=main)](https://github.com/adrisalas/botanic-garden/actions/workflows/server-test.yml)
 
-Document: [https://riuma.uma.es/xmlui/handle/10630/35690](https://riuma.uma.es/xmlui/handle/10630/35690), it can downloaded in the section "Ficheros".
+## Documentation: 
+The documentation is available on these links: 
+- [Report.pdf](./Report.pdf)
+- [https://riuma.uma.es/xmlui/handle/10630/35690](https://riuma.uma.es/xmlui/handle/10630/35690)
 
 ## Installation
 
